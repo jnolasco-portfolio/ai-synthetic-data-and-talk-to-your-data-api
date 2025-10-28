@@ -2,16 +2,19 @@ spring:
   application:
     name: synthetic-data-generator-ai
   datasource:
+    url: jdbc:mysql://localhost:3306
+    username: aiuser
+    password: "1234#"
     company:
-      jdbcUrl: jdbc:mysql://localhost:3306/company
+      url: jdbc:mysql://localhost:3306/company
       username: aiuser
       password: "1234#"
     library:
-      jdbcUrl: jdbc:mysql://localhost:3306/library
+      url: jdbc:mysql://localhost:3306/library
       username: aiuser
       password: "1234#"
     restaurant:
-      jdbcUrl: jdbc:mysql://localhost:3306/restaurant
+      url: jdbc:mysql://localhost:3306/restaurant
       username: aiuser
       password: "1234#"
   jpa:

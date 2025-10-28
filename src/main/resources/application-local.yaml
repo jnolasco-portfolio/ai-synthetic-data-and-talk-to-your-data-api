@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: synthetic-data-generator-ai
+  datasource:
+    company:
+      jdbcUrl: jdbc:mysql://localhost:3306/company
+      username: aiuser
+      password: "1234#"
+    library:
+      jdbcUrl: jdbc:mysql://localhost:3306/library
+      username: aiuser
+      password: "1234#"
+    restaurant:
+      jdbcUrl: jdbc:mysql://localhost:3306/restaurant
+      username: aiuser
+      password: "1234#"
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: false
+
+  ai:
+    vertex:
+      ai:
+        gemini:
+          project-id: ${GOOGLE_CLOUD_PROJECT}
+          location: ${GOOGLE_CLOUD_LOCATION}
+          chat:
+            options:
+              model: gemini-2.0-flash
+              temperature: 0.5

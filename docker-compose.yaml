@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mysql:lts-oracle
+    container_name: mysql
+    restart: unless-stopped
+    shm_size: 128mb
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234# # In production use a secret
+    volumes:
+      - ./schemas:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - syndata_network
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - "8090:80"
+    networks:
+      - syndata_network
+networks:
+  syndata_network:
+    driver: bridge

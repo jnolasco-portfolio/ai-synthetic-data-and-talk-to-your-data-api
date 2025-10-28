@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: synthetic-data-generator-ai
+  profiles:
+    active: local
+
+  liquibase:
+    enabled: false

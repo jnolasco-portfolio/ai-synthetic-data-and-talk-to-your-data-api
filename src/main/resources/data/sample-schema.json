@@ -1,0 +1,839 @@
+{
+  "database": "library",
+  "tables": [
+    {
+      "name": "Authors",
+      "columns": [
+        {
+          "name": "author_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "birth_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "death_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "nationality",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "biography",
+          "type": "TEXT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "author_id",
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "PK_Authors_author_id",
+          "columns": [
+            "author_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Publishers",
+      "columns": [
+        {
+          "name": "publisher_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "address",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "city",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "state",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "zip_code",
+          "type": "VARCHAR(10)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "country",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "contact_email",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "contact_phone",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "publisher_id",
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "PK_Publishers_publisher_id",
+          "columns": [
+            "publisher_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "columns": [
+        {
+          "name": "book_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "title",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "author_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "publisher_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "isbn",
+          "type": "VARCHAR(20)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "publication_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "genre",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "edition",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "number_of_pages",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "language",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "format",
+          "type": "ENUM('Hardcover', 'Paperback', 'E-book', 'Audiobook')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "book_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Books_author_id",
+          "columns": [
+            "author_id"
+          ],
+          "referencedTable": "Authors",
+          "referencedColumns": [
+            "author_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Books_publisher_id",
+          "columns": [
+            "publisher_id"
+          ],
+          "referencedTable": "Publishers",
+          "referencedColumns": [
+            "publisher_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Books_book_id",
+          "columns": [
+            "book_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        },
+        {
+          "name": "UNIQ_Books_isbn",
+          "columns": [
+            "isbn"
+          ],
+          "unique": true,
+          "type": "UNIQUE"
+        }
+      ]
+    },
+    {
+      "name": "Library_Branches",
+      "columns": [
+        {
+          "name": "branch_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "address",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "city",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "state",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "zip_code",
+          "type": "VARCHAR(10)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "manager_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "opening_hours",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "branch_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Library_Branches_ManagerID",
+          "columns": [
+            "manager_id"
+          ],
+          "referencedTable": "Employees",
+          "referencedColumns": [
+            "employee_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Library_Branches_branch_id",
+          "columns": [
+            "branch_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Library_Members",
+      "columns": [
+        {
+          "name": "member_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "date_of_birth",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "gender",
+          "type": "ENUM('Male', 'Female', 'Other')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "address",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "city",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "state",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "zip_code",
+          "type": "VARCHAR(10)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "join_date",
+          "type": "DATE",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "membership_type",
+          "type": "ENUM('Regular', 'Premium', 'Student', 'Senior')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "account_status",
+          "type": "ENUM('Active', 'Inactive', 'Suspended', 'Closed')",
+          "nullable": true,
+          "defaultValue": "Active",
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "member_id",
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "PK_Library_Members_member_id",
+          "columns": [
+            "member_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        },
+        {
+          "name": "UNIQ_Library_Members_email",
+          "columns": [
+            "email"
+          ],
+          "unique": true,
+          "type": "UNIQUE"
+        }
+      ]
+    },
+    {
+      "name": "Book_Inventory",
+      "columns": [
+        {
+          "name": "inventory_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "book_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "branch_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "quantity",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "available_quantity",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "condition",
+          "type": "ENUM('New', 'Good', 'Fair', 'Poor')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "inventory_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Book_Inventory_book_id",
+          "columns": [
+            "book_id"
+          ],
+          "referencedTable": "Books",
+          "referencedColumns": [
+            "book_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Book_Inventory_branch_id",
+          "columns": [
+            "branch_id"
+          ],
+          "referencedTable": "Library_Branches",
+          "referencedColumns": [
+            "branch_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Book_Inventory_inventory_id",
+          "columns": [
+            "inventory_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Book_Loans",
+      "columns": [
+        {
+          "name": "loan_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "member_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "inventory_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "loan_date",
+          "type": "DATETIME",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "due_date",
+          "type": "DATE",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "return_date",
+          "type": "DATETIME",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "loan_status",
+          "type": "ENUM('Checked Out', 'Returned', 'Overdue', 'Lost', 'Renewed')",
+          "nullable": true,
+          "defaultValue": "Checked Out",
+          "autoIncrement": false
+        },
+        {
+          "name": "fine_amount",
+          "type": "DECIMAL(10, 2)",
+          "nullable": true,
+          "defaultValue": "0",
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "loan_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Book_Loans_member_id",
+          "columns": [
+            "member_id"
+          ],
+          "referencedTable": "Library_Members",
+          "referencedColumns": [
+            "member_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Book_Loans_inventory_id",
+          "columns": [
+            "inventory_id"
+          ],
+          "referencedTable": "Book_Inventory",
+          "referencedColumns": [
+            "inventory_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Book_Loans_loan_id",
+          "columns": [
+            "loan_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Departments",
+      "columns": [
+        {
+          "name": "department_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "location",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "manager_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "department_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Departments_ManagerID",
+          "columns": [
+            "manager_id"
+          ],
+          "referencedTable": "Employees",
+          "referencedColumns": [
+            "employee_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Departments_department_id",
+          "columns": [
+            "department_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "columns": [
+        {
+          "name": "employee_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "job_title",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "department_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "branch_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        },
+        {
+          "name": "hire_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false
+        }
+      ],
+      "primaryKey": "employee_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Employees_department_id",
+          "columns": [
+            "department_id"
+          ],
+          "referencedTable": "Departments",
+          "referencedColumns": [
+            "department_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Employees_branch_id",
+          "columns": [
+            "branch_id"
+          ],
+          "referencedTable": "Library_Branches",
+          "referencedColumns": [
+            "branch_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Employees_employee_id",
+          "columns": [
+            "employee_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    }
+  ]
+}

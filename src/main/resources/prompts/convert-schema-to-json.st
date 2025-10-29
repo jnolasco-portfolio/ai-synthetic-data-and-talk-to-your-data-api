@@ -3,6 +3,7 @@ Analyze the provided SQL schema below, which is from a **{database_server}** dat
 **Output Format:**
 
 The JSON output must have the following structure:
+- `server`: The name of the database server.
 - `database`: The name of the database.
 - `tables`: An array of table objects.
 

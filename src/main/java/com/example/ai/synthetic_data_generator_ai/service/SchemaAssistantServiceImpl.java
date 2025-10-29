@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class SchemaNormalizerServiceImpl implements SchemaNormalizerService {
+public class SchemaAssistantServiceImpl implements SchemaAssistantService {
 
   private final ChatClient schemaAssistantChatClient;
 

@@ -1,4 +1,5 @@
 {
+  "server": "mysql",
   "database": "library",
   "tables": [
     {

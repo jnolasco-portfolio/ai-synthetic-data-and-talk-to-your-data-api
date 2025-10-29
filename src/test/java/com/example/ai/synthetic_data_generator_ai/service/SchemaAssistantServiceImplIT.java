@@ -16,10 +16,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-public class SchemaNormalizerServiceImplIT {
+public class SchemaAssistantServiceImplIT {
 
   @Autowired
-  private SchemaNormalizerServiceImpl underTest;
+  private SchemaAssistantServiceImpl underTest;
 
   @Value("classpath:data/sample-schema.sql")
   private Resource exampleSchema;
@@ -42,7 +42,7 @@ public class SchemaNormalizerServiceImplIT {
     JsonTestUtils.removeFields(actualJson, "comment");
     JsonTestUtils.removeFields(expectedJson, "comment");
 
-    System.out.println(actualJson);
+    System.out.println(json);
 
     assertThat(actualJson).isEqualTo(expectedJson);
   }

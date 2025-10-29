@@ -9,3 +9,14 @@ spring:
 
   liquibase:
     enabled: false
+
+  ai:
+    vertex:
+      ai:
+        gemini:
+          project-id: ${GOOGLE_CLOUD_PROJECT}
+          location: ${GOOGLE_CLOUD_LOCATION}
+          chat:
+            options:
+              model: gemini-2.5-flash
+              temperature: 0.2

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.json.Json;
 
 @SpringBootTest
 public class SchemaAssistantClientImplIT {
@@ -38,10 +39,8 @@ public class SchemaAssistantClientImplIT {
   @Test
   void testNormalizeSchema() throws IOException {
     NormalizedSchema normalizeSchema = underTest.normalizeSchema("library", exampleSchema.getInputStream(), "mysql");
-    String json = objectMapper
-        .writerWithDefaultPrettyPrinter()
-        .writeValueAsString(normalizeSchema);
 
+    String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);
     JsonNode actualJson = objectMapper.readTree(json);
     JsonNode expectedJson = objectMapper.readTree(exampleSchemaJson.getInputStream());
 

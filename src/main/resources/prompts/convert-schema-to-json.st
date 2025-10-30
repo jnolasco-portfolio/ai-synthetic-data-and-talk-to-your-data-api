@@ -1,4 +1,4 @@
-Analyze the provided SQL schema below, which is from a **{database_server}** database. Pay close attention to table definitions, column data types, primary keys, foreign keys, and any comments or annotations. You must be precise and follow the output format exactly. Your output will be parsed by a machine, so it is very important that you adhere to the specified format.
+Analyze the provided SQL schema below, which is from a **{database_server}** database. Pay close attention to table definitions, column data types, primary keys, and especially foreign key constraints which are critical for understanding table relationships. You must be precise and follow the output format exactly. Your output will be parsed by a machine, so it is very important that you adhere to the specified format.
 
 **Output Format:**
 
@@ -12,14 +12,14 @@ Each table object must have the following fields:
 - `comment`: A concise and informative description of the table.
 - `columns`: An array of column objects.
 - `primaryKey`: The name of the primary key column.
-- `foreignKeys`: An array of foreign key objects. If there are no foreign keys, this must be an empty array `[]`.
+- `foreignKeys`: An array of foreign key objects. It is crucial to correctly identify all foreign keys. If there are no foreign keys, this must be an empty array `[]`.
 - `indexes`: An array of index objects. This must include the primary key and any unique constraints.
 
 Each column object must have the following fields:
 - `name`: The name of the column.
 - `type`: The data type of the column.
 - `nullable`: `true` if the column can be null, `false` otherwise.
-- `defaultValue`: The default value of the column, or `null` if not specified.
+- `defaultValue`: The default value of the column, or `null` if not specified. For string literals, do not include the surrounding quotes in the JSON output.
 - `autoIncrement`: `true` if the column is auto-incrementing, `false` otherwise.
 - `comment`: A concise and informative description of the column.
 

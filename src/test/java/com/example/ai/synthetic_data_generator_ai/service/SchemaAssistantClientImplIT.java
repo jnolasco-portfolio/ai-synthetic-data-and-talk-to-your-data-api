@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema.Table;
+import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClientImpl;
 import com.example.ai.synthetic_data_generator_ai.util.JsonTestUtils;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -21,10 +22,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-public class SchemaAssistantServiceImplIT {
+public class SchemaAssistantClientImplIT {
 
   @Autowired
-  private SchemaAssistantServiceImpl underTest;
+  private LLMSchemaAssistantClientImpl underTest;
 
   @Value("classpath:data/sample-schema.sql")
   private Resource exampleSchema;
@@ -65,14 +66,4 @@ public class SchemaAssistantServiceImplIT {
     assertThat(rows).hasSize(10);
   }
 
-  @Test
-  void testGenerateSyntheticData() throws StreamReadException, DatabindException, IOException {
-
-    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
-
-    assertThatNoException().isThrownBy(() -> {
-      byte[] payload = underTest.generateSyntheticData(schema, 10).toByteArray();
-      assertThat(payload).isNotEmpty();
-    });
-  }
 }

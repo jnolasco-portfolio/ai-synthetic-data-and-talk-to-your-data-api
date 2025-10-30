@@ -1,0 +1,41 @@
+package com.example.ai.synthetic_data_generator_ai.service;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import java.io.IOException;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+
+import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@SpringBootTest
+public class SchemaAssistantServiceImplTest {
+
+  @Value("classpath:data/sample-schema.json")
+  private Resource exampleSchemaJson;
+
+  @Autowired
+  private ObjectMapper objectMapper;
+
+  @Autowired
+  private SchemaAssistantService underTest;
+
+  @Test
+  void testGenerateSyntheticData() throws StreamReadException, DatabindException, IOException {
+
+    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
+
+    assertThatNoException().isThrownBy(() -> {
+      byte[] payload = underTest.generateSyntheticData(schema, 10).toByteArray();
+      assertThat(payload).isNotEmpty();
+    });
+  }
+}

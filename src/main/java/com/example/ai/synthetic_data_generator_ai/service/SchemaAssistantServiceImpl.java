@@ -2,6 +2,7 @@ package com.example.ai.synthetic_data_generator_ai.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
@@ -28,9 +29,9 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
 
     try (ZipOutputStream zos = new ZipOutputStream(zipBytes)) {
 
-      for (NormalizedSchema.Table tbl : schema.tables()) {
+      for (NormalizedSchema.Table tbl : schema.getTables()) {
         List<String> csvRows = llmSchemaAssistantClient.getSyntheticDataAsCsv(tbl, rowCount);
-        zos.putNextEntry(new ZipEntry(tbl.name() + ".csv"));
+        zos.putNextEntry(new ZipEntry(tbl.getName() + ".csv"));
 
         // Use a Writer that **does not** close the ZipOutputStream
         Writer w = new OutputStreamWriter(zos); // no try‑with‑resources here
@@ -45,6 +46,12 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
     }
 
     return zipBytes;
+  }
+
+  @Override
+  public NormalizedSchema normalizeSchema(String schemaName, InputStream schemaStream, String databaseServer) {
+
+    return llmSchemaAssistantClient.normalizeSchema(schemaName, schemaStream, databaseServer);
   }
 
 }

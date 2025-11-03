@@ -1,42 +1,56 @@
 package com.example.ai.synthetic_data_generator_ai.dto;
 
 import java.util.List;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record NormalizedSchema(String server, String database, List<Table> tables) {
+@Data
+@NoArgsConstructor
+public class NormalizedSchema {
 
-        public record Table(
-                        String name,
-                        String comment,
-                        List<Column> columns,
-                        String primaryKey,
-                        List<ForeignKey> foreignKeys,
-                        List<Index> indexes) {
+    private String server;
+    private String database;
+    private List<Table> tables;
 
-        }
+    @Data
+    @NoArgsConstructor
+    public static class Table {
+        private String name;
+        private String comment;
+        private List<Column> columns;
+        private String primaryKey;
+        private List<ForeignKey> foreignKeys;
+        private List<Index> indexes;
+    }
 
-        public record Column(String name,
-                        String type,
-                        Boolean nullable,
-                        String defaultValue,
-                        Boolean autoIncrement,
-                        String comment) {
-        }
+    @Data
+    @NoArgsConstructor
+    public static class Column {
+        private String name;
+        private String type;
+        private Boolean nullable;
+        private String defaultValue;
+        private Boolean autoIncrement;
+        private String comment;
+    }
 
-        public record ForeignKey(
-                        String name,
-                        List<String> columns,
-                        String referencedTable,
-                        List<String> referencedColumns,
-                        String updateRule,
-                        String deleteRule) {
-        }
+    @Data
+    @NoArgsConstructor
+    public static class ForeignKey {
+        private String name;
+        private List<String> columns;
+        private String referencedTable;
+        private List<String> referencedColumns;
+        private String updateRule;
+        private String deleteRule;
+    }
 
-        public record Index(
-                        String name,
-                        List<String> columns,
-                        Boolean unique,
-                        String type) {
-
-        }
-
+    @Data
+    @NoArgsConstructor
+    public static class Index {
+        private String name;
+        private List<String> columns;
+        private Boolean unique;
+        private String type;
+    }
 }

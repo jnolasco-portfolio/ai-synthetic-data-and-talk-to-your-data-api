@@ -1,3 +1,8 @@
+
+/*
+    This is the sql schema that LLM needs to learn from in order generate synthetic data
+*/
+
 use library;
 
 -- Create the 'Authors' table

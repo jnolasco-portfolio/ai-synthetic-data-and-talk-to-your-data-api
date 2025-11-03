@@ -1,7 +1,6 @@
 package com.example.ai.synthetic_data_generator_ai.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +19,6 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.json.Json;
 
 @SpringBootTest
 public class SchemaAssistantClientImplIT {
@@ -56,8 +54,8 @@ public class SchemaAssistantClientImplIT {
   void testGetSyntheticDataAsCsv() throws StreamReadException, DatabindException, IOException {
 
     NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
-    Table table = schema.tables().stream()
-        .filter(t -> t.name().equals("Authors"))
+    Table table = schema.getTables().stream()
+        .filter(t -> t.getName().equals("Authors"))
         .findFirst()
         .orElseThrow();
 

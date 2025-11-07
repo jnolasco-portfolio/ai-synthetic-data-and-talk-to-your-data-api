@@ -12,7 +12,6 @@ import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClient;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -54,10 +53,25 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
   @Override
   public DataGenerationResponse generateSyntheticData(
       String conversationId,
-      NormalizedSchema schema,
+      NormalizedSchema normalizeSchema,
       DataGenerationRequest request,
       String tableName) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'generateSyntheticData'");
+
+    Map<String, List<String>> syntheticData = new HashMap<>();
+
+    normalizeSchema.getTables().stream()
+        .forEach(table -> {
+
+          syntheticData.put(table.getName(),
+              llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId, normalizeSchema, table.getName(),
+                  request.maxRows(),
+                  request.instructions()));
+
+        });
+
+    return DataGenerationResponse.builder()
+        .schema(normalizeSchema)
+        .data(syntheticData)
+        .build();
   }
 }

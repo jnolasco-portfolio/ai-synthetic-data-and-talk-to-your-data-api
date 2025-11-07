@@ -33,11 +33,25 @@ public class SchemaAssistantServiceImplTest {
   @Test
   void testGenerateSyntheticData() throws StreamReadException, DatabindException, IOException {
 
+    assertThatNoException().isThrownBy(() -> {
+      DataGenerationResponse response = underTest
+          .generateSyntheticData("123", "library", exampleSchemaJson.getInputStream(), builDataGenerationRequest());
+
+      assertThat(response).isNotNull();
+      assertThat(response.schema()).isNotNull();
+      assertThat(response.data()).isNotNull();
+
+    });
+  }
+
+  @Test
+  void testGenerateSyntheticDataByTable() throws StreamReadException, DatabindException, IOException {
+
     NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
 
     assertThatNoException().isThrownBy(() -> {
       DataGenerationResponse response = underTest
-          .generateSyntheticData("123", "library", exampleSchemaJson.getInputStream(), builDataGenerationRequest());
+          .generateSyntheticData("123", schema, builDataGenerationRequest(), "Authors");
 
       assertThat(response).isNotNull();
       assertThat(response.schema()).isNotNull();

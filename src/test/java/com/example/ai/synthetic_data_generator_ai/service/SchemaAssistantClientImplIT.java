@@ -36,7 +36,8 @@ public class SchemaAssistantClientImplIT {
 
   @Test
   void testNormalizeSchema() throws IOException {
-    NormalizedSchema normalizeSchema = underTest.normalizeSchema("library", exampleSchema.getInputStream(), "mysql");
+    NormalizedSchema normalizeSchema = underTest.normalizeSchema("123", "library", exampleSchema.getInputStream(),
+        "mysql");
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);
     JsonNode actualJson = objectMapper.readTree(json);
@@ -61,7 +62,7 @@ public class SchemaAssistantClientImplIT {
 
     String userInstructions = "Data in spanish language";
 
-    List<String> rows = underTest.getSyntheticDataAsCsv(schema, table.getName(), 10, userInstructions);
+    List<String> rows = underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions);
     System.out.println(rows);
     assertThat(rows).hasSize(10);
   }

@@ -10,11 +10,11 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -30,7 +30,8 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   private Resource generateSyntheticDataPrompt;
 
   @Override
-  public NormalizedSchema normalizeSchema(String schemaName, InputStream schemaStream, String userPrompt) {
+  public NormalizedSchema normalizeSchema(String conversationId, String schemaName, InputStream schemaStream,
+      String userPrompt) {
 
     if (schemaName == null)
       throw new IllegalArgumentException("Schema name cannot be null");
@@ -55,8 +56,11 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   }
 
   @Override
-  public List<String> getSyntheticDataAsCsv(@NonNull NormalizedSchema schema, @NonNull String tableName,
-      @NonNull int rowCount,
+  public List<String> getSyntheticDataAsCsv(
+      String conversationId,
+      @NonNull NormalizedSchema schema,
+      @NonNull String tableName,
+      int rowCount,
       @NonNull String userInstructions) {
 
     List<String> csvRows = schemaAssistantChatClient.prompt()

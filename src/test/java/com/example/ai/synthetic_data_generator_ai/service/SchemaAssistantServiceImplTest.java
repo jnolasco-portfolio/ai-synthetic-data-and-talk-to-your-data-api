@@ -37,7 +37,7 @@ public class SchemaAssistantServiceImplTest {
 
     assertThatNoException().isThrownBy(() -> {
       DataGenerationResponse response = underTest
-          .generateSyntheticData("library", exampleSchemaJson.getInputStream(), builDataGenerationRequest());
+          .generateSyntheticData("123", "library", exampleSchemaJson.getInputStream(), builDataGenerationRequest());
 
       assertThat(response).isNotNull();
       assertThat(response.schema()).isNotNull();

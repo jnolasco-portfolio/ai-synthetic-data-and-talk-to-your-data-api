@@ -12,6 +12,8 @@ import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClient;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,11 +24,13 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
 
   @Override
   public DataGenerationResponse generateSyntheticData(
-      String schemaName,
-      InputStream schemaStream,
-      DataGenerationRequest request) {
+      @NonNull String conversationId,
+      @NonNull String schemaName,
+      @NonNull InputStream schemaStream,
+      @NonNull DataGenerationRequest request) {
 
-    NormalizedSchema normalizeSchema = llmSchemaAssistantClient.normalizeSchema(schemaName, schemaStream,
+    NormalizedSchema normalizeSchema = llmSchemaAssistantClient.normalizeSchema(conversationId, schemaName,
+        schemaStream,
         request.prompt());
 
     Map<String, List<String>> syntheticData = new HashMap<>();
@@ -35,7 +39,8 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
         .forEach(table -> {
 
           syntheticData.put(table.getName(),
-              llmSchemaAssistantClient.getSyntheticDataAsCsv(normalizeSchema, table.getName(), request.maxRows(),
+              llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId, normalizeSchema, table.getName(),
+                  request.maxRows(),
                   request.instructions()));
 
         });
@@ -47,7 +52,10 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
   }
 
   @Override
-  public DataGenerationResponse generateSyntheticData(NormalizedSchema schema, DataGenerationRequest request,
+  public DataGenerationResponse generateSyntheticData(
+      String conversationId,
+      NormalizedSchema schema,
+      DataGenerationRequest request,
       String tableName) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'generateSyntheticData'");

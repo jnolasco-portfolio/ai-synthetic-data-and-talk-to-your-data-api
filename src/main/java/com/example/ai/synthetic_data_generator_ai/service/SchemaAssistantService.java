@@ -8,11 +8,11 @@ import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 
 public interface SchemaAssistantService {
 
-  DataGenerationResponse generateSyntheticData(String schemaName, InputStream schemaStream,
-      DataGenerationRequest request);
+    DataGenerationResponse generateSyntheticData(String conversationId, String schemaName, InputStream schemaStream,
+            DataGenerationRequest request);
 
-  DataGenerationResponse generateSyntheticData(NormalizedSchema schema,
-      DataGenerationRequest request,
-      String tableName);
+    DataGenerationResponse generateSyntheticData(String conversationId, NormalizedSchema schema,
+            DataGenerationRequest request,
+            String tableName);
 
 }

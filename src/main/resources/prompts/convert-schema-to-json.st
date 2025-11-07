@@ -1,10 +1,16 @@
-Analyze the provided SQL schema below, which is from a **{database_server}** database. Pay close attention to table definitions, column data types, primary keys, and especially foreign key constraints which are critical for understanding table relationships. You must be precise and follow the output format exactly. Your output will be parsed by a machine, so it is very important that you adhere to the specified format.
+Analyze the provided SQL schema below, first infer what database server (mysql, postgres, SQLSever, etc) is from schema. Pay close attention to table definitions, column data types, primary keys, and especially foreign key constraints which are critical for understanding table relationships. You must be precise and follow the output format exactly. Your output will be parsed by a machine, so it is very important that you adhere to the specified format.
+
+In case user prompt is included take them into account.
+
+**User prompt:**
+
+{user_prompt}
 
 **Output Format:**
 
 The JSON output must have the following structure:
-- `server`: The name of the database server.
-- `database`: The name of the database.
+- `server`: The name of the database server. Infer from ddl syntax and in case ambiguety use a best guess value.
+- `database`: The name of the database. In case schema name could be infered from ddl use it otherwise use template value;
 - `tables`: An array of table objects.
 
 Each table object must have the following fields:

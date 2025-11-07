@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 
+import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -34,8 +36,22 @@ public class SchemaAssistantServiceImplTest {
     NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
 
     assertThatNoException().isThrownBy(() -> {
-      byte[] payload = underTest.generateSyntheticData(schema, 10).toByteArray();
-      assertThat(payload).isNotEmpty();
+      DataGenerationResponse response = underTest
+          .generateSyntheticData("library", exampleSchemaJson.getInputStream(), builDataGenerationRequest());
+
+      assertThat(response).isNotNull();
+      assertThat(response.schema()).isNotNull();
+      assertThat(response.data()).isNotNull();
+
     });
+  }
+
+  private DataGenerationRequest builDataGenerationRequest() {
+    return DataGenerationRequest.builder()
+        .maxRows(20)
+        .temperature(0.7)
+        .prompt("Data in spanish language")
+        .instructions("Keep track of primary keys generated in parent tables in order to use them in child tables")
+        .build();
   }
 }

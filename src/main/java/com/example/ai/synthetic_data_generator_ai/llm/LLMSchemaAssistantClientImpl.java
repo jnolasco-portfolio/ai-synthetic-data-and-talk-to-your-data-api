@@ -10,10 +10,10 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema.Table;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,16 +30,20 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   private Resource generateSyntheticDataPrompt;
 
   @Override
-  public NormalizedSchema normalizeSchema(String originalSchema, InputStream schemaStream, String databaseServer) {
+  public NormalizedSchema normalizeSchema(String schemaName, InputStream schemaStream, String userPrompt) {
+
+    if (schemaName == null)
+      throw new IllegalArgumentException("Schema name cannot be null");
+
     try {
-      String schemaString = new String(schemaStream.readAllBytes(), StandardCharsets.UTF_8);
+      String ddl = new String(schemaStream.readAllBytes(), StandardCharsets.UTF_8);
 
       NormalizedSchema schema = schemaAssistantChatClient.prompt()
           .user(u -> u.text(normalizeSchemaPrompt)
               .params(Map.of(
-                  "database", originalSchema,
-                  "schema", schemaString,
-                  "database_server", databaseServer)))
+                  "database", schemaName,
+                  "schema", ddl,
+                  "user_prompt", userPrompt)))
           .call()
           .entity(new ParameterizedTypeReference<NormalizedSchema>() {
           });
@@ -51,13 +55,17 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   }
 
   @Override
-  public List<String> getSyntheticDataAsCsv(Table table, int rowCount) {
+  public List<String> getSyntheticDataAsCsv(@NonNull NormalizedSchema schema, @NonNull String tableName,
+      @NonNull int rowCount,
+      @NonNull String userInstructions) {
 
     List<String> csvRows = schemaAssistantChatClient.prompt()
         .user(u -> u.text(generateSyntheticDataPrompt)
             .params(Map.of(
-                "table_structure", table,
-                "rowCount", rowCount)))
+                "schema", schema,
+                "tableName", tableName,
+                "rowCount", rowCount,
+                "user_instructions", userInstructions)))
         .call()
         .entity(new ParameterizedTypeReference<List<String>>() {
         });

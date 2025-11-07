@@ -59,7 +59,10 @@ public class SchemaAssistantClientImplIT {
         .findFirst()
         .orElseThrow();
 
-    List<String> rows = underTest.getSyntheticDataAsCsv(table, 10);
+    String userInstructions = "Data in spanish language";
+
+    List<String> rows = underTest.getSyntheticDataAsCsv(schema, table.getName(), 10, userInstructions);
+    System.out.println(rows);
     assertThat(rows).hasSize(10);
   }
 

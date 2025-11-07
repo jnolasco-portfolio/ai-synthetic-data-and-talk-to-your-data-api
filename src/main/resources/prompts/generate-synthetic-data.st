@@ -1,20 +1,26 @@
 **Goal:** 
 
-Create realistic synthetic data, respecting all defined constraints, especially foreign keys, to ensure data integrity. The system should be capable of generating a configurable amount of data, for instance, a thousand rows per table.
+Create realistic synthetic data for table {tableName}, respecting all defined constraints, especially foreign keys, to ensure data integrity. The system should be capable of generating a configurable amount of data, for instance, a thousand rows per table.
 
 In order to do so, 
 
 **Input Format:**
 
-Learn table structure from JSON formatted bellow.
-
-{table_structure}
-
 Analyze the provided SQL schema below, Pay close attention to table definitions, column data types, primary keys, foreign keys, and any comments or annotations. You must be precise and follow the output format exactly. Your output will be parsed by a machine, so it is very important that you adhere to the specified format.
 
+**SQL schema:**
+{schema}
+
+
+In case user instructions are provided take them into account.
+
+**User instructions:**
+
+{user_instructions}
 
 **Output Format:**
 
+- Generate data in CSV format for table {tableName} only.
 - Your output must be a valid JSON array of strings.
 - Each string in the array should be a single CSV row, with values separated by commas.
 - For parent tables, produce exactly {rowCount} CSV lines (one string per row).

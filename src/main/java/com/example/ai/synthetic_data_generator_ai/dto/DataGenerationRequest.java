@@ -1,4 +1,7 @@
 package com.example.ai.synthetic_data_generator_ai.dto;
 
-public record DataGenerationRequest(NormalizedSchema schema, int rowCount) {
+import lombok.Builder;
+
+@Builder
+public record DataGenerationRequest(String prompt, Double temperature, int maxRows, String instructions) {
 }

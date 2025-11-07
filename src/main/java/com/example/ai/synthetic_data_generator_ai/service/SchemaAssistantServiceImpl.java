@@ -1,16 +1,14 @@
 package com.example.ai.synthetic_data_generator_ai.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClient;
 
@@ -23,35 +21,35 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
   private final LLMSchemaAssistantClient llmSchemaAssistantClient;
 
   @Override
-  public ByteArrayOutputStream generateSyntheticData(NormalizedSchema schema, int rowCount) throws IOException {
+  public DataGenerationResponse generateSyntheticData(
+      String schemaName,
+      InputStream schemaStream,
+      DataGenerationRequest request) {
 
-    ByteArrayOutputStream zipBytes = new ByteArrayOutputStream();
+    NormalizedSchema normalizeSchema = llmSchemaAssistantClient.normalizeSchema(schemaName, schemaStream,
+        request.prompt());
 
-    try (ZipOutputStream zos = new ZipOutputStream(zipBytes)) {
+    Map<String, List<String>> syntheticData = new HashMap<>();
 
-      for (NormalizedSchema.Table tbl : schema.getTables()) {
-        List<String> csvRows = llmSchemaAssistantClient.getSyntheticDataAsCsv(tbl, rowCount);
-        zos.putNextEntry(new ZipEntry(tbl.getName() + ".csv"));
+    normalizeSchema.getTables().stream()
+        .forEach(table -> {
 
-        // Use a Writer that **does not** close the ZipOutputStream
-        Writer w = new OutputStreamWriter(zos); // no try‑with‑resources here
-        for (String line : csvRows) {
-          w.write(line);
-          w.write('\n');
-        }
-        w.flush(); // make sure everything is written
-        zos.closeEntry(); // close only the current entry
-        // DO NOT call w.close() – that would close zos as well
-      }
-    }
+          syntheticData.put(table.getName(),
+              llmSchemaAssistantClient.getSyntheticDataAsCsv(normalizeSchema, table.getName(), request.maxRows(),
+                  request.instructions()));
 
-    return zipBytes;
+        });
+
+    return DataGenerationResponse.builder()
+        .schema(normalizeSchema)
+        .data(syntheticData)
+        .build();
   }
 
   @Override
-  public NormalizedSchema normalizeSchema(String schemaName, InputStream schemaStream, String databaseServer) {
-
-    return llmSchemaAssistantClient.normalizeSchema(schemaName, schemaStream, databaseServer);
+  public DataGenerationResponse generateSyntheticData(NormalizedSchema schema, DataGenerationRequest request,
+      String tableName) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'generateSyntheticData'");
   }
-
 }

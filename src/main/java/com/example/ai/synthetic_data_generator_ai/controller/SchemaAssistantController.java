@@ -29,12 +29,15 @@ public class SchemaAssistantController {
 
   private final SchemaAssistantService schemaAssistantService;
 
-  @PostMapping("/generate-data")
+  @PostMapping(value = "/generate-data", consumes = "multipart/form-data")
   public ResponseEntity<DataGenerationResponse> generateSyntheticData(
       @NotBlank @RequestParam("conversationId") String conversationId,
       @NotBlank @RequestParam("schemaFileName") String schemaFileName,
       @NotNull @RequestPart("file") MultipartFile file,
-      @NotNull @RequestPart("parameters") DataGenerationRequest parameters) throws IOException {
+      @NotNull @RequestParam("parameters") String parametersJson) throws IOException {
+
+    DataGenerationRequest parameters = new com.fasterxml.jackson.databind.ObjectMapper().readValue(parametersJson,
+        DataGenerationRequest.class);
 
     return ResponseEntity
         .ok(schemaAssistantService.generateSyntheticData(conversationId, schemaFileName, file.getInputStream(),

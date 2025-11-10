@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   private Resource generateSyntheticDataPrompt;
 
   @Override
+  @Cacheable(cacheNames = "llmCache", key = "{#conversationId, #schemaName, #userPrompt}")
   public NormalizedSchema normalizeSchema(String conversationId, String schemaName, InputStream schemaStream,
       String userPrompt) {
 
@@ -56,6 +58,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   }
 
   @Override
+  @Cacheable(cacheNames = "csvCache", key = "{#conversationId, #schema, #tableName, #rowCount, #userInstructions}")
   public List<String> getSyntheticDataAsCsv(
       String conversationId,
       @NonNull NormalizedSchema schema,

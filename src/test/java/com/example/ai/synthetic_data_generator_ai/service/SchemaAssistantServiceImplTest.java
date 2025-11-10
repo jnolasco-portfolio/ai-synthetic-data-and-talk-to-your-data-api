@@ -63,7 +63,7 @@ public class SchemaAssistantServiceImplTest {
   private DataGenerationRequest builDataGenerationRequest() {
     return DataGenerationRequest.builder()
         .maxRows(20)
-        .temperature(0.7)
+        .temperature(0.2)
         .prompt("Data in spanish language")
         .instructions("Keep track of primary keys generated in parent tables in order to use them in child tables")
         .build();

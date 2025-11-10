@@ -17,7 +17,9 @@ import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
@@ -34,12 +36,15 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   @Cacheable(cacheNames = "llmCache", key = "{#conversationId, #schemaName, #userPrompt}")
   public NormalizedSchema normalizeSchema(String conversationId, String schemaName, InputStream schemaStream,
       String userPrompt) {
+    log.info("Normalizing schema for conversationId: {}, schemaName: {}", conversationId, schemaName);
 
-    if (schemaName == null)
+    if (schemaName == null) {
       throw new IllegalArgumentException("Schema name cannot be null");
+    }
 
     try {
       String ddl = new String(schemaStream.readAllBytes(), StandardCharsets.UTF_8);
+      log.debug("Schema DDL: {}", ddl);
 
       NormalizedSchema schema = schemaAssistantChatClient.prompt()
           .user(u -> u.text(normalizeSchemaPrompt)
@@ -51,9 +56,11 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
           .entity(new ParameterizedTypeReference<NormalizedSchema>() {
           });
 
+      log.info("Successfully normalized schema for conversationId: {}", conversationId);
+      log.debug("Normalized schema: {}", schema);
       return schema;
     } catch (IOException e) {
-      throw new RuntimeException("Failed to read schema stream", e);
+      throw new RuntimeException("Failed to read schema stream for conversationId: " + conversationId, e);
     }
   }
 
@@ -65,6 +72,8 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       @NonNull String tableName,
       int rowCount,
       @NonNull String userInstructions) {
+    log.info("Generating synthetic data for conversationId: {}, tableName: {}, rowCount: {}", conversationId, tableName,
+        rowCount);
 
     List<String> csvRows = schemaAssistantChatClient.prompt()
         .user(u -> u.text(generateSyntheticDataPrompt)
@@ -77,6 +86,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
         .entity(new ParameterizedTypeReference<List<String>>() {
         });
 
+    log.info("Successfully generated {} CSV rows for conversationId: {}", csvRows.size(), conversationId);
     return csvRows;
   }
 

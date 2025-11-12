@@ -13,7 +13,6 @@ import org.springframework.core.io.Resource;
 
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema.Table;
-import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClientImpl;
 import com.example.ai.synthetic_data_generator_ai.util.JsonTestUtils;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;

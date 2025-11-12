@@ -14,7 +14,6 @@ public interface SchemaAssistantService {
                         LearnSchemaRequest request);
 
         DataGenerationResponse generateSyntheticData(String conversationId, NormalizedSchema schema,
-                        DataGenerationRequest request,
-                        String tableName);
+                        DataGenerationRequest request);
 
 }

@@ -31,7 +31,7 @@ public class SchemaAssistantController {
 
   private final SchemaAssistantService schemaAssistantService;
 
-  @PostMapping(value = "/generate-data", consumes = "multipart/form-data")
+  @PostMapping(value = "/learn", consumes = "multipart/form-data")
   public ResponseEntity<LearnSchemaResponse> learnSchema(
       @NotBlank @RequestParam("conversationId") String conversationId,
       @NotBlank @RequestParam("schemaFileName") String schemaFileName,
@@ -46,15 +46,14 @@ public class SchemaAssistantController {
             parameters));
   }
 
-  @PostMapping("/generate-data/table")
+  @PostMapping("/generate")
   public ResponseEntity<DataGenerationResponse> generateSyntheticDataByTable(
       @NotBlank @RequestParam("conversationId") String conversationId,
       @NotNull @RequestBody NormalizedSchema schema,
-      @NotNull @RequestPart("parameters") DataGenerationRequest parameters,
-      @NotBlank @RequestParam("tableName") String tableName) throws IOException {
+      @NotNull @RequestPart("parameters") DataGenerationRequest request) throws IOException {
 
     return ResponseEntity
-        .ok(schemaAssistantService.generateSyntheticData(conversationId, schema, parameters, tableName));
+        .ok(schemaAssistantService.generateSyntheticData(conversationId, schema, request));
   }
 
 }

@@ -41,12 +41,11 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
         public DataGenerationResponse generateSyntheticData(
                         String conversationId,
                         NormalizedSchema normalizeSchema,
-                        DataGenerationRequest request,
-                        String tableName) {
+                        DataGenerationRequest request) {
 
                 List<String> syntheticData = llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId,
                                 normalizeSchema,
-                                tableName,
+                                request.tableName(),
                                 request.maxRows(),
                                 request.instructions());
                 return DataGenerationResponse.builder()

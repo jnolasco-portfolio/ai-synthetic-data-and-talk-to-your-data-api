@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.service.SchemaAssistantService;
 
@@ -30,17 +32,17 @@ public class SchemaAssistantController {
   private final SchemaAssistantService schemaAssistantService;
 
   @PostMapping(value = "/generate-data", consumes = "multipart/form-data")
-  public ResponseEntity<DataGenerationResponse> generateSyntheticData(
+  public ResponseEntity<LearnSchemaResponse> learnSchema(
       @NotBlank @RequestParam("conversationId") String conversationId,
       @NotBlank @RequestParam("schemaFileName") String schemaFileName,
       @NotNull @RequestPart("file") MultipartFile file,
       @NotNull @RequestParam("parameters") String parametersJson) throws IOException {
 
-    DataGenerationRequest parameters = new com.fasterxml.jackson.databind.ObjectMapper().readValue(parametersJson,
-        DataGenerationRequest.class);
+    LearnSchemaRequest parameters = new com.fasterxml.jackson.databind.ObjectMapper().readValue(parametersJson,
+        LearnSchemaRequest.class);
 
     return ResponseEntity
-        .ok(schemaAssistantService.generateSyntheticData(conversationId, schemaFileName, file.getInputStream(),
+        .ok(schemaAssistantService.learnSchema(conversationId, schemaFileName, file.getInputStream(),
             parameters));
   }
 

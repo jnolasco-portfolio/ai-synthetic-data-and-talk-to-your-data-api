@@ -1,14 +1,14 @@
 package com.example.ai.synthetic_data_generator_ai.service;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClient;
 
@@ -19,59 +19,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SchemaAssistantServiceImpl implements SchemaAssistantService {
 
-  private final LLMSchemaAssistantClient llmSchemaAssistantClient;
+        private final LLMSchemaAssistantClient llmSchemaAssistantClient;
 
-  @Override
-  public DataGenerationResponse generateSyntheticData(
-      @NonNull String conversationId,
-      @NonNull String schemaName,
-      @NonNull InputStream schemaStream,
-      @NonNull DataGenerationRequest request) {
+        @Override
+        public LearnSchemaResponse learnSchema(
+                        @NonNull String conversationId,
+                        @NonNull String schemaName,
+                        @NonNull InputStream schemaStream,
+                        @NonNull LearnSchemaRequest request) {
 
-    NormalizedSchema normalizeSchema = llmSchemaAssistantClient.normalizeSchema(conversationId, schemaName,
-        schemaStream,
-        request.prompt());
+                NormalizedSchema normalizeSchema = llmSchemaAssistantClient.normalizeSchema(conversationId, schemaName,
+                                schemaStream,
+                                request.prompt());
 
-    Map<String, List<String>> syntheticData = new HashMap<>();
+                return LearnSchemaResponse.builder()
+                                .schema(normalizeSchema)
+                                .build();
+        }
 
-    normalizeSchema.getTables().stream()
-        .forEach(table -> {
+        @Override
+        public DataGenerationResponse generateSyntheticData(
+                        String conversationId,
+                        NormalizedSchema normalizeSchema,
+                        DataGenerationRequest request,
+                        String tableName) {
 
-          syntheticData.put(table.getName(),
-              llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId, normalizeSchema, table.getName(),
-                  request.maxRows(),
-                  request.instructions()));
-
-        });
-
-    return DataGenerationResponse.builder()
-        .schema(normalizeSchema)
-        .data(syntheticData)
-        .build();
-  }
-
-  @Override
-  public DataGenerationResponse generateSyntheticData(
-      String conversationId,
-      NormalizedSchema normalizeSchema,
-      DataGenerationRequest request,
-      String tableName) {
-
-    Map<String, List<String>> syntheticData = new HashMap<>();
-
-    normalizeSchema.getTables().stream()
-        .forEach(table -> {
-
-          syntheticData.put(table.getName(),
-              llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId, normalizeSchema, table.getName(),
-                  request.maxRows(),
-                  request.instructions()));
-
-        });
-
-    return DataGenerationResponse.builder()
-        .schema(normalizeSchema)
-        .data(syntheticData)
-        .build();
-  }
+                List<String> syntheticData = llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId,
+                                normalizeSchema,
+                                tableName,
+                                request.maxRows(),
+                                request.instructions());
+                return DataGenerationResponse.builder()
+                                .data(syntheticData)
+                                .build();
+        }
 }

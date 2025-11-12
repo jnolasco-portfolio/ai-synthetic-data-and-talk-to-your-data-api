@@ -5,8 +5,8 @@ import org.hibernate.validator.constraints.Range;
 import lombok.Builder;
 
 @Builder
-public record DataGenerationRequest(
+public record LearnSchemaRequest(
+                String prompt,
                 @Range(min = 0, max = 1) Double temperature,
-                @Range(min = 1, max = 100) Integer maxRows,
-                String instructions) {
+                @Range(min = 1, max = 100) Integer maxRows) {
 }

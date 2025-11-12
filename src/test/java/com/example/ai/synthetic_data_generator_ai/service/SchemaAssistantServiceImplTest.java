@@ -13,10 +13,13 @@ import org.springframework.core.io.Resource;
 
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.util.Data;
 
 @SpringBootTest
 public class SchemaAssistantServiceImplTest {
@@ -31,15 +34,14 @@ public class SchemaAssistantServiceImplTest {
   private SchemaAssistantService underTest;
 
   @Test
-  void testGenerateSyntheticData() throws StreamReadException, DatabindException, IOException {
+  void testLearnSchema() throws StreamReadException, DatabindException, IOException {
 
     assertThatNoException().isThrownBy(() -> {
-      DataGenerationResponse response = underTest
-          .generateSyntheticData("123", "library", exampleSchemaJson.getInputStream(), builDataGenerationRequest());
+      LearnSchemaResponse response = underTest
+          .learnSchema("123", "library", exampleSchemaJson.getInputStream(), builLearnSchemaRequest());
 
       assertThat(response).isNotNull();
       assertThat(response.schema()).isNotNull();
-      assertThat(response.data()).isNotNull();
 
     });
   }
@@ -54,17 +56,23 @@ public class SchemaAssistantServiceImplTest {
           .generateSyntheticData("123", schema, builDataGenerationRequest(), "Authors");
 
       assertThat(response).isNotNull();
-      assertThat(response.schema()).isNotNull();
       assertThat(response.data()).isNotNull();
 
     });
+  }
+
+  private LearnSchemaRequest builLearnSchemaRequest() {
+    return LearnSchemaRequest.builder()
+        .maxRows(20)
+        .temperature(0.2)
+        .prompt("Data in spanish language")
+        .build();
   }
 
   private DataGenerationRequest builDataGenerationRequest() {
     return DataGenerationRequest.builder()
         .maxRows(20)
         .temperature(0.2)
-        .prompt("Data in spanish language")
         .instructions("Keep track of primary keys generated in parent tables in order to use them in child tables")
         .build();
   }

@@ -4,15 +4,17 @@ import java.io.InputStream;
 
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
 
 public interface SchemaAssistantService {
 
-    DataGenerationResponse generateSyntheticData(String conversationId, String schemaName, InputStream schemaStream,
-            DataGenerationRequest request);
+        LearnSchemaResponse learnSchema(String conversationId, String schemaName, InputStream schemaStream,
+                        LearnSchemaRequest request);
 
-    DataGenerationResponse generateSyntheticData(String conversationId, NormalizedSchema schema,
-            DataGenerationRequest request,
-            String tableName);
+        DataGenerationResponse generateSyntheticData(String conversationId, NormalizedSchema schema,
+                        DataGenerationRequest request,
+                        String tableName);
 
 }

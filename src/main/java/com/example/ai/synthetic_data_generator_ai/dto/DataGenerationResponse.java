@@ -5,5 +5,5 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record DataGenerationResponse(List<String> data) {
+public record DataGenerationResponse(String tableName, List<String> data) {
 }

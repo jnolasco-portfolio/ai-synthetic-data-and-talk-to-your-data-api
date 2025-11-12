@@ -34,8 +34,12 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
 
   @Override
   @Cacheable(cacheNames = "llmCache", key = "{#conversationId, #schemaName, #userPrompt}")
-  public NormalizedSchema normalizeSchema(String conversationId, String schemaName, InputStream schemaStream,
+  public NormalizedSchema normalizeSchema(
+      String conversationId,
+      String schemaName,
+      InputStream schemaStream,
       String userPrompt) {
+
     log.info("Normalizing schema for conversationId: {}, schemaName: {}", conversationId, schemaName);
 
     if (schemaName == null) {
@@ -46,7 +50,9 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       String ddl = new String(schemaStream.readAllBytes(), StandardCharsets.UTF_8);
       log.debug("Schema DDL: {}", ddl);
 
-      NormalizedSchema schema = schemaAssistantChatClient.prompt()
+      // TODO: Temperature
+      NormalizedSchema schema = schemaAssistantChatClient
+          .prompt()
           .user(u -> u.text(normalizeSchemaPrompt)
               .params(Map.of(
                   "database", schemaName,
@@ -75,6 +81,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
     log.info("Generating synthetic data for conversationId: {}, tableName: {}, rowCount: {}", conversationId, tableName,
         rowCount);
 
+    // TODO: Add temperature from user
     List<String> csvRows = schemaAssistantChatClient.prompt()
         .user(u -> u.text(generateSyntheticDataPrompt)
             .params(Map.of(

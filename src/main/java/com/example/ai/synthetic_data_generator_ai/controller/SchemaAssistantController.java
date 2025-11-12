@@ -48,12 +48,10 @@ public class SchemaAssistantController {
 
   @PostMapping("/generate")
   public ResponseEntity<DataGenerationResponse> generateSyntheticDataByTable(
-      @NotBlank @RequestParam("conversationId") String conversationId,
-      @NotNull @RequestBody NormalizedSchema schema,
-      @NotNull @RequestPart("parameters") DataGenerationRequest request) throws IOException {
+      @NotNull @RequestBody DataGenerationRequest request) throws IOException {
 
     return ResponseEntity
-        .ok(schemaAssistantService.generateSyntheticData(conversationId, schema, request));
+        .ok(schemaAssistantService.generateSyntheticData(request));
   }
 
 }

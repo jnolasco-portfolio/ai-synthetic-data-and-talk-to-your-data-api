@@ -38,17 +38,15 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
         }
 
         @Override
-        public DataGenerationResponse generateSyntheticData(
-                        String conversationId,
-                        NormalizedSchema normalizeSchema,
-                        DataGenerationRequest request) {
+        public DataGenerationResponse generateSyntheticData(DataGenerationRequest request) {
 
-                List<String> syntheticData = llmSchemaAssistantClient.getSyntheticDataAsCsv(conversationId,
-                                normalizeSchema,
+                List<String> syntheticData = llmSchemaAssistantClient.getSyntheticDataAsCsv(request.conversationId(),
+                                request.schema(),
                                 request.tableName(),
                                 request.maxRows(),
                                 request.instructions());
                 return DataGenerationResponse.builder()
+                                .tableName(request.tableName())
                                 .data(syntheticData)
                                 .build();
         }

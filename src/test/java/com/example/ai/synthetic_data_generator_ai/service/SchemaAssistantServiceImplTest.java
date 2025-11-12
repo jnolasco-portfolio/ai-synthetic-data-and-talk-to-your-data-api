@@ -48,11 +48,9 @@ public class SchemaAssistantServiceImplTest {
   @Test
   void testGenerateSyntheticDataByTable() throws StreamReadException, DatabindException, IOException {
 
-    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
-
     assertThatNoException().isThrownBy(() -> {
       DataGenerationResponse response = underTest
-          .generateSyntheticData("123", schema, builDataGenerationRequest());
+          .generateSyntheticData(builDataGenerationRequest());
 
       assertThat(response).isNotNull();
       assertThat(response.data()).isNotNull();
@@ -68,9 +66,12 @@ public class SchemaAssistantServiceImplTest {
         .build();
   }
 
-  private DataGenerationRequest builDataGenerationRequest() {
+  private DataGenerationRequest builDataGenerationRequest() throws StreamReadException, DatabindException, IOException {
+    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
     return DataGenerationRequest.builder()
         .tableName("Authors")
+        .conversationId("123")
+        .schema(schema)
         .maxRows(20)
         .temperature(0.2)
         .instructions("Keep track of primary keys generated in parent tables in order to use them in child tables")

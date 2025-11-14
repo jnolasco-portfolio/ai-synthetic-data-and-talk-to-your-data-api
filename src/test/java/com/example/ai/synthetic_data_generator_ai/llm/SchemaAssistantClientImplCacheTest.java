@@ -16,8 +16,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema.Table;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse.Table;
 import com.example.ai.synthetic_data_generator_ai.util.JsonTestUtils;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -51,7 +51,7 @@ public class SchemaAssistantClientImplCacheTest {
 
     underTest.normalizeSchema(conversationId, schemaName,
         exampleSchema.getInputStream(), userPrompt);
-    NormalizedSchema normalizeSchema = underTest.normalizeSchema(conversationId, schemaName,
+    LearnDatabaseResponse normalizeSchema = underTest.normalizeSchema(conversationId, schemaName,
         exampleSchema.getInputStream(), userPrompt);
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);
@@ -72,7 +72,8 @@ public class SchemaAssistantClientImplCacheTest {
   @Test
   void testGetSyntheticDataAsCsv() throws StreamReadException, DatabindException, IOException {
 
-    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
+    LearnDatabaseResponse schema = objectMapper.readValue(exampleSchemaJson.getInputStream(),
+        LearnDatabaseResponse.class);
     Table table = schema.getTables().stream()
         .filter(t -> t.getName().equals("Authors"))
         .findFirst()

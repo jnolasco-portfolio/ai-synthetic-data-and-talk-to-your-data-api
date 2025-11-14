@@ -8,10 +8,10 @@ import lombok.Builder;
 
 @Builder
 public record DataGenerationRequest(
-        @NotBlank String conversationId,
-        @NotNull NormalizedSchema schema,
-        @NotBlank String tableName,
-        @Range(min = 0, max = 1) Double temperature,
-        @Range(min = 1, max = 100) Integer maxRows,
-        String instructions) {
+                @NotBlank String conversationId,
+                @NotNull LearnDatabaseResponse schema,
+                @NotBlank String tableName,
+                @Range(min = 0, max = 1) Double temperature,
+                @Range(min = 1, max = 100) Integer maxRows,
+                String instructions) {
 }

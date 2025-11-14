@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
-import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaRequest;
-import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaResponse;
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
 import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClient;
 
 import lombok.NonNull;
@@ -22,19 +21,18 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
         private final LLMSchemaAssistantClient llmSchemaAssistantClient;
 
         @Override
-        public LearnSchemaResponse learnSchema(
+        public LearnDatabaseResponse learnSchema(
                         @NonNull String conversationId,
                         @NonNull String schemaName,
                         @NonNull InputStream schemaStream,
-                        @NonNull LearnSchemaRequest request) {
+                        @NonNull LearnDatabaseRequest request) {
 
-                NormalizedSchema normalizeSchema = llmSchemaAssistantClient.normalizeSchema(conversationId, schemaName,
+                LearnDatabaseResponse normalizeSchema = llmSchemaAssistantClient.normalizeSchema(conversationId,
+                                schemaName,
                                 schemaStream,
                                 request.prompt());
 
-                return LearnSchemaResponse.builder()
-                                .schema(normalizeSchema)
-                                .build();
+                return normalizeSchema;
         }
 
         @Override

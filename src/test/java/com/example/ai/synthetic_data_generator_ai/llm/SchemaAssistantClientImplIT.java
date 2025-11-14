@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema.Table;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse.Table;
 import com.example.ai.synthetic_data_generator_ai.util.JsonTestUtils;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -27,7 +27,7 @@ public class SchemaAssistantClientImplIT {
 
   @Value("classpath:data/sample-schema.sql")
   private Resource exampleSchema;
-  @Value("classpath:data/sample-schema.json")
+  @Value("classpath:data/learn-schema-response.json")
   private Resource exampleSchemaJson;
 
   @Autowired
@@ -35,7 +35,7 @@ public class SchemaAssistantClientImplIT {
 
   @Test
   void testNormalizeSchema() throws IOException {
-    NormalizedSchema normalizeSchema = underTest.normalizeSchema("123", "library", exampleSchema.getInputStream(),
+    LearnDatabaseResponse normalizeSchema = underTest.normalizeSchema("123", "library", exampleSchema.getInputStream(),
         "mysql");
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);
@@ -53,7 +53,8 @@ public class SchemaAssistantClientImplIT {
   @Test
   void testGetSyntheticDataAsCsv() throws StreamReadException, DatabindException, IOException {
 
-    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
+    LearnDatabaseResponse schema = objectMapper.readValue(exampleSchemaJson.getInputStream(),
+        LearnDatabaseResponse.class);
     Table table = schema.getTables().stream()
         .filter(t -> t.getName().equals("Authors"))
         .findFirst()

@@ -1,0 +1,926 @@
+{
+  "server": "mysql",
+  "database": "library",
+  "tables": [
+    {
+      "name": "Authors",
+      "comment": "Stores information about authors.",
+      "columns": [
+        {
+          "name": "author_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the author."
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "First name of the author."
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Last name of the author."
+        },
+        {
+          "name": "birth_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date of birth of the author."
+        },
+        {
+          "name": "death_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date of death of the author (if applicable)."
+        },
+        {
+          "name": "nationality",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Nationality of the author."
+        },
+        {
+          "name": "biography",
+          "type": "TEXT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "A brief biography of the author."
+        }
+      ],
+      "primaryKey": "author_id",
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "PK_Authors_author_id",
+          "columns": [
+            "author_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Publishers",
+      "comment": "Stores information about book publishers.",
+      "columns": [
+        {
+          "name": "publisher_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the publisher."
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Name of the publisher."
+        },
+        {
+          "name": "address",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Physical address of the publisher."
+        },
+        {
+          "name": "city",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "City where the publisher is located."
+        },
+        {
+          "name": "state",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "State where the publisher is located."
+        },
+        {
+          "name": "zip_code",
+          "type": "VARCHAR(10)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Zip code of the publisher's address."
+        },
+        {
+          "name": "country",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Country where the publisher is located."
+        },
+        {
+          "name": "contact_email",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Contact email for the publisher."
+        },
+        {
+          "name": "contact_phone",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Contact phone number for the publisher."
+        }
+      ],
+      "primaryKey": "publisher_id",
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "PK_Publishers_publisher_id",
+          "columns": [
+            "publisher_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "comment": "Stores information about books available in the library.",
+      "columns": [
+        {
+          "name": "book_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the book."
+        },
+        {
+          "name": "title",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Title of the book."
+        },
+        {
+          "name": "author_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the author of the book."
+        },
+        {
+          "name": "publisher_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the publisher of the book."
+        },
+        {
+          "name": "isbn",
+          "type": "VARCHAR(20)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "International Standard Book Number, unique for each book."
+        },
+        {
+          "name": "publication_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date when the book was published."
+        },
+        {
+          "name": "genre",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Genre or category of the book."
+        },
+        {
+          "name": "edition",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Edition of the book (e.g., 'First Edition', 'Revised')."
+        },
+        {
+          "name": "number_of_pages",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Total number of pages in the book."
+        },
+        {
+          "name": "language",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Language in which the book is written."
+        },
+        {
+          "name": "format",
+          "type": "ENUM('Hardcover', 'Paperback', 'E-book', 'Audiobook')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Physical or digital format of the book."
+        }
+      ],
+      "primaryKey": "book_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Books_author_id",
+          "columns": [
+            "author_id"
+          ],
+          "referencedTable": "Authors",
+          "referencedColumns": [
+            "author_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Books_publisher_id",
+          "columns": [
+            "publisher_id"
+          ],
+          "referencedTable": "Publishers",
+          "referencedColumns": [
+            "publisher_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Books_book_id",
+          "columns": [
+            "book_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        },
+        {
+          "name": "UNIQ_Books_isbn",
+          "columns": [
+            "isbn"
+          ],
+          "unique": true,
+          "type": "UNIQUE"
+        }
+      ]
+    },
+    {
+      "name": "Library_Branches",
+      "comment": "Stores information about different library branches.",
+      "columns": [
+        {
+          "name": "branch_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the library branch."
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Name of the library branch."
+        },
+        {
+          "name": "address",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Physical address of the branch."
+        },
+        {
+          "name": "city",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "City where the branch is located."
+        },
+        {
+          "name": "state",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "State where the branch is located."
+        },
+        {
+          "name": "zip_code",
+          "type": "VARCHAR(10)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Zip code of the branch's address."
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Contact phone number for the branch."
+        },
+        {
+          "name": "manager_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the employee who manages this branch."
+        },
+        {
+          "name": "opening_hours",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Operating hours of the library branch."
+        }
+      ],
+      "primaryKey": "branch_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Library_Branches_ManagerID",
+          "columns": [
+            "manager_id"
+          ],
+          "referencedTable": "Employees",
+          "referencedColumns": [
+            "employee_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Library_Branches_branch_id",
+          "columns": [
+            "branch_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Library_Members",
+      "comment": "Stores information about library members.",
+      "columns": [
+        {
+          "name": "member_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the library member."
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "First name of the member."
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Last name of the member."
+        },
+        {
+          "name": "date_of_birth",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date of birth of the member."
+        },
+        {
+          "name": "gender",
+          "type": "ENUM('Male', 'Female', 'Other')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Gender of the member."
+        },
+        {
+          "name": "address",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Physical address of the member."
+        },
+        {
+          "name": "city",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "City where the member resides."
+        },
+        {
+          "name": "state",
+          "type": "VARCHAR(50)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "State where the member resides."
+        },
+        {
+          "name": "zip_code",
+          "type": "VARCHAR(10)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Zip code of the member's address."
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Email address of the member, must be unique."
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Phone number of the member."
+        },
+        {
+          "name": "join_date",
+          "type": "DATE",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date when the member joined the library."
+        },
+        {
+          "name": "membership_type",
+          "type": "ENUM('Regular', 'Premium', 'Student', 'Senior')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Type of membership the member holds."
+        },
+        {
+          "name": "account_status",
+          "type": "ENUM('Active', 'Inactive', 'Suspended', 'Closed')",
+          "nullable": true,
+          "defaultValue": "Active",
+          "autoIncrement": false,
+          "comment": "Current status of the member's account."
+        }
+      ],
+      "primaryKey": "member_id",
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "PK_Library_Members_member_id",
+          "columns": [
+            "member_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        },
+        {
+          "name": "UNIQ_Library_Members_email",
+          "columns": [
+            "email"
+          ],
+          "unique": true,
+          "type": "UNIQUE"
+        }
+      ]
+    },
+    {
+      "name": "Book_Inventory",
+      "comment": "Tracks the quantity and condition of books at each library branch.",
+      "columns": [
+        {
+          "name": "inventory_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for an inventory record."
+        },
+        {
+          "name": "book_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the book."
+        },
+        {
+          "name": "branch_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the library branch."
+        },
+        {
+          "name": "quantity",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Total number of copies of the book at the branch."
+        },
+        {
+          "name": "available_quantity",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Number of available copies for loan."
+        },
+        {
+          "name": "condition",
+          "type": "ENUM('New', 'Good', 'Fair', 'Poor')",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Physical condition of the book copies."
+        }
+      ],
+      "primaryKey": "inventory_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Book_Inventory_book_id",
+          "columns": [
+            "book_id"
+          ],
+          "referencedTable": "Books",
+          "referencedColumns": [
+            "book_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Book_Inventory_branch_id",
+          "columns": [
+            "branch_id"
+          ],
+          "referencedTable": "Library_Branches",
+          "referencedColumns": [
+            "branch_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Book_Inventory_inventory_id",
+          "columns": [
+            "inventory_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Book_Loans",
+      "comment": "Records details of books loaned to members.",
+      "columns": [
+        {
+          "name": "loan_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the book loan."
+        },
+        {
+          "name": "member_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the member who borrowed the book."
+        },
+        {
+          "name": "inventory_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the specific book copy from inventory."
+        },
+        {
+          "name": "loan_date",
+          "type": "DATETIME",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date and time when the book was loaned."
+        },
+        {
+          "name": "due_date",
+          "type": "DATE",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date when the book is due to be returned."
+        },
+        {
+          "name": "return_date",
+          "type": "DATETIME",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date and time when the book was actually returned."
+        },
+        {
+          "name": "loan_status",
+          "type": "ENUM('Checked Out', 'Returned', 'Overdue', 'Lost', 'Renewed')",
+          "nullable": true,
+          "defaultValue": "Checked Out",
+          "autoIncrement": false,
+          "comment": "Current status of the loan."
+        },
+        {
+          "name": "fine_amount",
+          "type": "DECIMAL(10, 2)",
+          "nullable": true,
+          "defaultValue": "0",
+          "autoIncrement": false,
+          "comment": "Amount of fine incurred for the loan."
+        }
+      ],
+      "primaryKey": "loan_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Book_Loans_member_id",
+          "columns": [
+            "member_id"
+          ],
+          "referencedTable": "Library_Members",
+          "referencedColumns": [
+            "member_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Book_Loans_inventory_id",
+          "columns": [
+            "inventory_id"
+          ],
+          "referencedTable": "Book_Inventory",
+          "referencedColumns": [
+            "inventory_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Book_Loans_loan_id",
+          "columns": [
+            "loan_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Departments",
+      "comment": "Stores information about departments within the library system.",
+      "columns": [
+        {
+          "name": "department_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the department."
+        },
+        {
+          "name": "name",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Name of the department."
+        },
+        {
+          "name": "location",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Physical location of the department."
+        },
+        {
+          "name": "manager_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the employee who manages this department."
+        }
+      ],
+      "primaryKey": "department_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Departments_ManagerID",
+          "columns": [
+            "manager_id"
+          ],
+          "referencedTable": "Employees",
+          "referencedColumns": [
+            "employee_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Departments_department_id",
+          "columns": [
+            "department_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "comment": "Stores information about library employees.",
+      "columns": [
+        {
+          "name": "employee_id",
+          "type": "INT",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": true,
+          "comment": "Unique identifier for the employee."
+        },
+        {
+          "name": "first_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "First name of the employee."
+        },
+        {
+          "name": "last_name",
+          "type": "VARCHAR(100)",
+          "nullable": false,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Last name of the employee."
+        },
+        {
+          "name": "job_title",
+          "type": "VARCHAR(100)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Job title or position of the employee."
+        },
+        {
+          "name": "department_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the department the employee belongs to."
+        },
+        {
+          "name": "branch_id",
+          "type": "INT",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Foreign key referencing the library branch where the employee works."
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Email address of the employee."
+        },
+        {
+          "name": "phone_number",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Phone number of the employee."
+        },
+        {
+          "name": "hire_date",
+          "type": "DATE",
+          "nullable": true,
+          "defaultValue": null,
+          "autoIncrement": false,
+          "comment": "Date when the employee was hired."
+        }
+      ],
+      "primaryKey": "employee_id",
+      "foreignKeys": [
+        {
+          "name": "FK_Employees_department_id",
+          "columns": [
+            "department_id"
+          ],
+          "referencedTable": "Departments",
+          "referencedColumns": [
+            "department_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        },
+        {
+          "name": "FK_Employees_branch_id",
+          "columns": [
+            "branch_id"
+          ],
+          "referencedTable": "Library_Branches",
+          "referencedColumns": [
+            "branch_id"
+          ],
+          "updateRule": null,
+          "deleteRule": null
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PK_Employees_employee_id",
+          "columns": [
+            "employee_id"
+          ],
+          "unique": true,
+          "type": "PRIMARY KEY"
+        }
+      ]
+    }
+  ]
+}

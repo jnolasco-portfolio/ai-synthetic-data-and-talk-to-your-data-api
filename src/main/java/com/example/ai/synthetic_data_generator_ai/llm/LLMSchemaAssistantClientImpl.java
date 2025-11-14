@@ -13,7 +13,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
 
   @Override
   @Cacheable(cacheNames = "llmCache", key = "{#conversationId, #schemaName, #userPrompt}")
-  public NormalizedSchema normalizeSchema(
+  public LearnDatabaseResponse normalizeSchema(
       String conversationId,
       String schemaName,
       InputStream schemaStream,
@@ -51,7 +51,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       log.debug("Schema DDL: {}", ddl);
 
       // TODO: Temperature
-      NormalizedSchema schema = schemaAssistantChatClient
+      LearnDatabaseResponse schema = schemaAssistantChatClient
           .prompt()
           .user(u -> u.text(normalizeSchemaPrompt)
               .params(Map.of(
@@ -59,7 +59,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
                   "schema", ddl,
                   "user_prompt", userPrompt)))
           .call()
-          .entity(new ParameterizedTypeReference<NormalizedSchema>() {
+          .entity(new ParameterizedTypeReference<LearnDatabaseResponse>() {
           });
 
       log.info("Successfully normalized schema for conversationId: {}", conversationId);
@@ -74,7 +74,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   @Cacheable(cacheNames = "csvCache", key = "{#conversationId, #schema, #tableName, #rowCount, #userInstructions}")
   public List<String> getSyntheticDataAsCsv(
       String conversationId,
-      @NonNull NormalizedSchema schema,
+      @NonNull LearnDatabaseResponse schema,
       @NonNull String tableName,
       int rowCount,
       @NonNull String userInstructions) {

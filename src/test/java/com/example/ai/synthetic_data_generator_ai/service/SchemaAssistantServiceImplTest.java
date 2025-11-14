@@ -13,9 +13,8 @@ import org.springframework.core.io.Resource;
 
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.DataGenerationResponse;
-import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaRequest;
-import com.example.ai.synthetic_data_generator_ai.dto.LearnSchemaResponse;
-import com.example.ai.synthetic_data_generator_ai.dto.NormalizedSchema;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseRequest;
+import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,11 +35,11 @@ public class SchemaAssistantServiceImplTest {
   void testLearnSchema() throws StreamReadException, DatabindException, IOException {
 
     assertThatNoException().isThrownBy(() -> {
-      LearnSchemaResponse response = underTest
+      LearnDatabaseResponse response = underTest
           .learnSchema("123", "library", exampleSchemaJson.getInputStream(), builLearnSchemaRequest());
 
       assertThat(response).isNotNull();
-      assertThat(response.schema()).isNotNull();
+      assertThat(response.getTables()).isNotEmpty();
 
     });
   }
@@ -58,8 +57,8 @@ public class SchemaAssistantServiceImplTest {
     });
   }
 
-  private LearnSchemaRequest builLearnSchemaRequest() {
-    return LearnSchemaRequest.builder()
+  private LearnDatabaseRequest builLearnSchemaRequest() {
+    return LearnDatabaseRequest.builder()
         .maxRows(20)
         .temperature(0.2)
         .prompt("Data in spanish language")
@@ -67,7 +66,8 @@ public class SchemaAssistantServiceImplTest {
   }
 
   private DataGenerationRequest builDataGenerationRequest() throws StreamReadException, DatabindException, IOException {
-    NormalizedSchema schema = objectMapper.readValue(exampleSchemaJson.getInputStream(), NormalizedSchema.class);
+    LearnDatabaseResponse schema = objectMapper.readValue(exampleSchemaJson.getInputStream(),
+        LearnDatabaseResponse.class);
     return DataGenerationRequest.builder()
         .tableName("Authors")
         .conversationId("123")

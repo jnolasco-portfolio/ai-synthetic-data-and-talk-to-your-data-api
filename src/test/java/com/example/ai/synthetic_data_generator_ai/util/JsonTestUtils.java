@@ -11,7 +11,7 @@ public class JsonTestUtils {
     try {
       return objectMapper
           .writerWithDefaultPrettyPrinter()
-          .writeValueAsString(object).strip();
+          .writeValueAsString(object).trim().strip();
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }

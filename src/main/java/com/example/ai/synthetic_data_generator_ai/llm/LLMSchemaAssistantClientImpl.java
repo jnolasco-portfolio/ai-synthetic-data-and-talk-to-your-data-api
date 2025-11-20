@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
@@ -34,7 +35,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
 
   @Override
   @Cacheable(cacheNames = "llmCache", key = "{#conversationId, #schemaName, #userPrompt}")
-  public LearnDatabaseResponse normalizeSchema(
+  public LearnDatabaseResponse learnSchema(
       String conversationId,
       String schemaName,
       InputStream schemaStream,
@@ -53,6 +54,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       // TODO: Temperature
       LearnDatabaseResponse schema = schemaAssistantChatClient
           .prompt()
+          .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
           .user(u -> u.text(normalizeSchemaPrompt)
               .params(Map.of(
                   "database", schemaName,
@@ -83,6 +85,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
 
     // TODO: Add temperature from user
     List<String> csvRows = schemaAssistantChatClient.prompt()
+        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
         .user(u -> u.text(generateSyntheticDataPrompt)
             .params(Map.of(
                 "schema", schema,

@@ -49,9 +49,9 @@ public class SchemaAssistantClientImplCacheTest {
     String schemaName = "library";
     String userPrompt = "mysql";
 
-    underTest.normalizeSchema(conversationId, schemaName,
+    underTest.learnSchema(conversationId, schemaName,
         exampleSchema.getInputStream(), userPrompt);
-    LearnDatabaseResponse normalizeSchema = underTest.normalizeSchema(conversationId, schemaName,
+    LearnDatabaseResponse normalizeSchema = underTest.learnSchema(conversationId, schemaName,
         exampleSchema.getInputStream(), userPrompt);
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);

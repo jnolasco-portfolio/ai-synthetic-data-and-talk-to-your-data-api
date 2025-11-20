@@ -35,7 +35,7 @@ public class SchemaAssistantClientImplIT {
 
   @Test
   void testNormalizeSchema() throws IOException {
-    LearnDatabaseResponse normalizeSchema = underTest.normalizeSchema("123", "library", exampleSchema.getInputStream(),
+    LearnDatabaseResponse normalizeSchema = underTest.learnSchema("123", "library", exampleSchema.getInputStream(),
         "mysql");
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);

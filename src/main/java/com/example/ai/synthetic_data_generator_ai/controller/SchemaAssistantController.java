@@ -3,6 +3,7 @@ package com.example.ai.synthetic_data_generator_ai.controller;
 import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin()
 @Valid
 @RestController
 @RequestMapping("/api/v1/schema-assistant")
@@ -30,6 +32,16 @@ public class SchemaAssistantController {
 
   private final SchemaAssistantService schemaAssistantService;
 
+  /**
+   * 
+   * @param conversationId
+   * @param schemaFileName
+   * @param file
+   * @param parametersJson {"prompt": string, "temperature": number, "maxRows":
+   *                       number}
+   * @return
+   * @throws IOException
+   */
   @PostMapping(value = "/learn", consumes = "multipart/form-data")
   public ResponseEntity<LearnDatabaseResponse> learnSchema(
       @NotBlank @RequestParam("conversationId") String conversationId,

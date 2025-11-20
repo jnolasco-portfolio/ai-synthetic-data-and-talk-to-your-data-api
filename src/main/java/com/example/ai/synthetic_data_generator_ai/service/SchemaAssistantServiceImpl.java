@@ -27,7 +27,7 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
                         @NonNull InputStream schemaStream,
                         @NonNull LearnDatabaseRequest request) {
 
-                LearnDatabaseResponse normalizeSchema = llmSchemaAssistantClient.normalizeSchema(conversationId,
+                LearnDatabaseResponse normalizeSchema = llmSchemaAssistantClient.learnSchema(conversationId,
                                 schemaName,
                                 schemaStream,
                                 request.prompt());

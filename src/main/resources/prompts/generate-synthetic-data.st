@@ -20,7 +20,8 @@ In case user instructions are provided take them into account.
 
 **Output Format:**
 
-- Generate data in CSV format for table {tableName} only.
+- Generate data in CSV format for table {tableName} only. 
+- Column separator character is '|'.
 - Your output must be a valid JSON array of strings.
 - Each string in the array should be a single CSV row, with values separated by commas.
 - For parent tables, produce exactly {rowCount} CSV lines (one string per row).
@@ -29,3 +30,5 @@ In case user instructions are provided take them into account.
 - Foreign‑key values must reference existing primary‑key values of the parent table (you may generate them on the fly).
 - Do NOT include a CSV header line.
 - Your response should only contain the JSON array, with no other text or formatting.
+- Column values should not break column separator character.
+- When value is null leave column blank for portability sake.

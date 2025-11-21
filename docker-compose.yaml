@@ -1,6 +1,7 @@
 services:
   db:
     image: mysql:lts-oracle
+    command: --local-infile=ON
     container_name: mysql
     restart: unless-stopped
     shm_size: 128mb

@@ -80,8 +80,8 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       @NonNull String tableName,
       int rowCount,
       @NonNull String userInstructions) {
-    log.info("Generating synthetic data for conversationId: {}, tableName: {}, rowCount: {}", conversationId, tableName,
-        rowCount);
+    log.info("Generating synthetic data for conversationId: {}, tableName: {}, maxRows: {}", conversationId, tableName,
+        rowCount); // rowCount is maxRows
 
     // TODO: Add temperature from user
     List<String> csvRows = schemaAssistantChatClient.prompt()

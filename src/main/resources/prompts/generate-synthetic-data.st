@@ -22,13 +22,15 @@ In case user instructions are provided take them into account.
 
 - Generate data in CSV format for table {tableName} only. 
 - Column separator character is '|'.
+- Do NOT enclose with columns with quotes.
 - Your output must be a valid JSON array of strings.
 - Each string in the array should be a single CSV row, with values separated by commas.
 - For parent tables, produce exactly {rowCount} CSV lines (one string per row).
 - For child tables, you are allowed to produce more than {rowCount} if realism makes sense (e.g., multiple order lines for a single order). In any case, do not produce more than four or five rows per parent.
 - All primary‑key values must be unique within the table.
+- All unique constraint values must be unique within the table.
 - Foreign‑key values must reference existing primary‑key values of the parent table (you may generate them on the fly).
 - Do NOT include a CSV header line.
 - Your response should only contain the JSON array, with no other text or formatting.
 - Column values should not break column separator character.
-- When value is null leave column blank for portability sake.
+- When value is null use as a token \N (backslash followed by capital N).

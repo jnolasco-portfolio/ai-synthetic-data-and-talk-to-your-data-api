@@ -5,26 +5,27 @@ import javax.sql.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-//@Configuration
+@Configuration
 public class DataSourceConfiguration {
 
-    @Bean
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.company")
-    public DataSource companyDataSource() {
-        return DataSourceBuilder.create().build();
-    }
-
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.library")
+    @ConfigurationProperties(prefix = "app.datasource.library")
     public DataSource libraryDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.restaurant")
+    @ConfigurationProperties(prefix = "app.datasource.company")
+    public DataSource companyDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "app.datasource.restaurant")
     public DataSource restaurantDataSource() {
         return DataSourceBuilder.create().build();
     }

@@ -17,9 +17,9 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
-    "spring.datasource.url=jdbc:mysql://localhost:3306/library",
-    "spring.datasource.username=aiuser",
-    "spring.datasource.password=1234#"
+    "app.datasource.library.jdbc-url=jdbc:mysql://localhost:3306/library",
+    "app.datasource.library.username=aiuser",
+    "app.datasource.library.password=1234#"
 })
 class DatabaseToolServiceTest {
 

@@ -19,4 +19,9 @@ spring:
           chat:
             options:
               model: gemini-2.5-flash
-              temperature: 0.2
+              temperature: 0.4
+
+langfuse:
+  public-key: ${LANGFUSE_PUBLIC_KEY:pk-lf-1234567890}
+  secret-key: ${LANGFUSE_SECRET_KEY:sk-lf-1234567890}
+  host: ${LANGFUSE_HOST:https://cloud.langfuse.com}

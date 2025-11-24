@@ -23,6 +23,11 @@ import org.springframework.test.context.TestPropertySource;
 })
 class DatabaseToolServiceTest {
 
+  @Test
+  void testName() {
+
+  }
+
   @Autowired
   private DatabaseToolService databaseToolService;
 

@@ -33,6 +33,9 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   @Value("classpath:prompts/generate-synthetic-data.st")
   private Resource generateSyntheticDataPrompt;
 
+  @Value("classpath:prompts/natural-lenguage-to-sql.st")
+  private Resource nlToSqlPrompt;
+
   @Override
   @Cacheable(cacheNames = "llmCache", key = "{#conversationId, #schemaName, #userPrompt}")
   public LearnDatabaseResponse learnSchema(
@@ -98,6 +101,24 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
 
     log.info("Successfully generated {} CSV rows for conversationId: {}", csvRows.size(), conversationId);
     return csvRows;
+  }
+
+  @Override
+  public String generateSqlQuery(String conversationId, LearnDatabaseResponse schema, String question) {
+    log.info("Generating SQL query for conversationId: {}, question: {}", conversationId, question);
+
+    String sqlQuery = schemaAssistantChatClient.prompt()
+        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+        .user(u -> u.text(nlToSqlPrompt)
+            .params(Map.of(
+                "schema", schema,
+                "question", question)))
+        .call()
+        .content();
+
+    log.info("Successfully generated SQL query for conversationId: {}", conversationId);
+    log.debug("Generated SQL: {}", sqlQuery);
+    return sqlQuery;
   }
 
 }

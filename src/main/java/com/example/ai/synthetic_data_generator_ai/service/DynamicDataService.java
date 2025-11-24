@@ -8,7 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.jdbc.core.simple.JdbcClient;
 
 @Slf4j
 @Service
@@ -50,5 +53,24 @@ public class DynamicDataService {
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to database for schema: " + schemaName, e);
         }
+    }
+
+    /**
+     * Executes a SQL query against the specified schema.
+     *
+     * @param schemaName The name of the schema (e.g., "company", "library").
+     * @param query      The SQL query to execute.
+     * @return A list of maps representing the query result.
+     */
+    public List<Map<String, Object>> executeQuery(String schemaName, String query) {
+        String dataSourceName = schemaName + "DataSource";
+        DataSource selectedDataSource = dataSources.get(dataSourceName);
+
+        if (selectedDataSource == null) {
+            throw new IllegalArgumentException("Invalid schema name provided: " + schemaName);
+        }
+
+        JdbcClient jdbcClient = JdbcClient.create(selectedDataSource);
+        return jdbcClient.sql(query).query().listOfRows();
     }
 }

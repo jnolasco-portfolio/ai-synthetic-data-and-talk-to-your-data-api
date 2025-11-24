@@ -17,4 +17,9 @@ public interface LLMSchemaAssistantClient {
                         int rowCount,
                         String userInstructions);
 
+        String generateSqlQuery(
+                        String conversationId,
+                        LearnDatabaseResponse schema,
+                        String question);
+
 }

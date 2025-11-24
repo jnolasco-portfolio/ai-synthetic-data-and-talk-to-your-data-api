@@ -1,0 +1,9 @@
+package com.example.ai.synthetic_data_generator_ai.dto;
+
+import java.util.List;
+import java.util.Map;
+
+public record QueryResponse(
+        String sqlQuery,
+        List<Map<String, Object>> result) {
+}

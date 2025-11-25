@@ -38,6 +38,7 @@ public class TalkToYourDataController {
     public QueryResponse query(@RequestBody QueryRequest request) {
         String sql = llmClient.generateSqlQuery(request.conversationId(), request.schema(), request.question());
         List<Map<String, Object>> result = dynamicDataService.executeQuery(request.schema().getDatabase(), sql);
-        return new QueryResponse(sql, result);
+
+        return new QueryResponse(request.conversationId(), request.question(), sql, result);
     }
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 public record QueryResponse(
-        String sqlQuery,
-        List<Map<String, Object>> result) {
+                String conversationId,
+                String question,
+                String sqlQuery,
+                List<Map<String, Object>> result) {
 }

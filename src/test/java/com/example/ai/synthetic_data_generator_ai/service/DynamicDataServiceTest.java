@@ -2,6 +2,8 @@ package com.example.ai.synthetic_data_generator_ai.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,18 @@ public class DynamicDataServiceTest {
 
   @Test
   void testExecuteQuery() {
-    // TODO: Implement test
+    // Arrange
+    String query = "SELECT * FROM Authors WHERE author_id = 1";
+
+    // Act
+    List<Map<String, Object>> result = dynamicDataService.executeQuery("library", query);
+
+    // Assert
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    Map<String, Object> firstAuthor = result.get(0);
+    assertThat(firstAuthor.get("first_name")).isEqualTo("Stephen");
+    assertThat(firstAuthor.get("last_name")).isEqualTo("King");
   }
 
   @Test

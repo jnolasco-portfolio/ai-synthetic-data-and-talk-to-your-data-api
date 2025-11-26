@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class LearnDatabaseResponse {
 
   private String server;
-  private String database;
+  private String schemaName;
   private List<Table> tables;
 
   @Data

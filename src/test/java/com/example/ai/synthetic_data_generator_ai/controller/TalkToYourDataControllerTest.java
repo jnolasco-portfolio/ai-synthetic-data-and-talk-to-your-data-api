@@ -43,11 +43,11 @@ public class TalkToYourDataControllerTest {
                 QueryRequest request = new QueryRequest(
                                 "Show me oldest Author",
                                 "123",
-                                testSchema);
+                                "library");
 
                 String expectedSqlQuery = "SELECT * FROM Authors ORDER BY birth_date ASC LIMIT 1";
 
-                mockMvc.perform(post("/query")
+                mockMvc.perform(post("/api/v1/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                                 .andDo(print())

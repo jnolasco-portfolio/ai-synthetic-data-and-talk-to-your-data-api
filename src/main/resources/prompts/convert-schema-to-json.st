@@ -10,7 +10,7 @@ In case user prompt is included take them into account.
 
 The JSON output must have the following structure:
 - `server`: The name of the database server. Infer from ddl syntax and in case ambiguety use a best guess value.
-- `database`: The name of the database. In case schema name could be infered from ddl use it otherwise use template value;
+- `schemaName`: The name of the database. In case schema name could be infered from ddl use it otherwise use template value;
 - `tables`: An array of table objects.
 
 Each table object must have the following fields:
@@ -45,7 +45,7 @@ Each index object must have the following fields:
 
 **SQL Schema to Convert:**
 
-SQL Schema for database '{database}':
+SQL Schema for database '{schemaName}':
 
 {schema}
 

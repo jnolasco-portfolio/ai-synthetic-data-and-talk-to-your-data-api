@@ -66,7 +66,7 @@ public class DynamicDataService {
             String catalog = connection.getCatalog();
 
             LearnDatabaseResponse response = new LearnDatabaseResponse();
-            response.setDatabase(catalog);
+            response.setSchemaName(catalog);
             response.setServer(metaData.getDatabaseProductName());
             response.setTables(extractTables(metaData, catalog));
 

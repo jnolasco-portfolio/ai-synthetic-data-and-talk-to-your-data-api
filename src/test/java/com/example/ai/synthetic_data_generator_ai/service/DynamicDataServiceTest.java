@@ -49,7 +49,7 @@ public class DynamicDataServiceTest {
 
     // Assert
     assertThat(response).isNotNull();
-    assertThat(response.getDatabase()).isEqualTo("library");
+    assertThat(response.getSchemaName()).isEqualTo("library");
     assertThat(response.getTables()).isNotEmpty();
 
     // Assertions for a specific table, e.g., "Authors"

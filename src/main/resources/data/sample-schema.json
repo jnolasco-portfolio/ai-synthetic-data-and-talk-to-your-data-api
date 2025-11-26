@@ -1,6 +1,6 @@
 {
   "server": "mysql",
-  "database": "library",
+  "schemaName": "library",
   "tables": [
     {
       "name": "Authors",

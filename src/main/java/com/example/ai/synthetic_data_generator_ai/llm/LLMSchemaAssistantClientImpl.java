@@ -60,7 +60,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
           .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
           .user(u -> u.text(normalizeSchemaPrompt)
               .params(Map.of(
-                  "database", schemaName,
+                  "schemaName", schemaName,
                   "schema", ddl,
                   "user_prompt", userPrompt)))
           .call()

@@ -104,6 +104,7 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
   }
 
   @Override
+  @Cacheable(cacheNames = "queryStrings", key = "{#conversationId, #schema, #question}")
   public String generateSqlQuery(String conversationId, LearnDatabaseResponse schema, String question) {
     log.info("Generating SQL query for conversationId: {}, question: {}", conversationId, question);
 

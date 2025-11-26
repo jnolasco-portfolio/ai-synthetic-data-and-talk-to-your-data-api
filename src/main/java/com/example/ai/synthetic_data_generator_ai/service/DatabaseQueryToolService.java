@@ -4,29 +4,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.jdbc.core.simple.JdbcClient;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class DatabaseToolService implements Function<DatabaseToolService.Request, DatabaseToolService.Response> {
+public class DatabaseQueryToolService
+    implements Function<DatabaseQueryToolService.Request, DatabaseQueryToolService.Response> {
 
-  private final JdbcClient jdbcClient;
+  private final DynamicDataService dynamicDataService;
 
   @Override
   public Response apply(Request request) {
 
     log.info("SELECT: {}", request.queryStr());
 
-    List<Map<String, Object>> rows = jdbcClient.sql(request.queryStr()).query().listOfRows();
+    List<Map<String, Object>> rows = dynamicDataService.executeQuery(request.schemaName(), request.queryStr());
     ResultSetWrapper rsw = new ResultSetWrapper(rows);
 
     return new Response(rsw);
   }
 
-  public record Request(String queryStr) {
+  public record Request(String schemaName, String queryStr) {
   }
 
   public record Response(ResultSetWrapper result) {

@@ -21,7 +21,7 @@ import org.springframework.test.context.TestPropertySource;
     "app.datasource.library.username=aiuser",
     "app.datasource.library.password=1234#"
 })
-class DatabaseToolServiceTest {
+class DatabaseQueryToolServiceTest {
 
   @Test
   void testName() {
@@ -29,20 +29,20 @@ class DatabaseToolServiceTest {
   }
 
   @Autowired
-  private DatabaseToolService databaseToolService;
+  private DatabaseQueryToolService databaseToolService;
 
   @Test
   void apply_withRealDatabase_shouldReturnAuthorsData() {
     // Arrange
     String query = "select * from Authors";
-    DatabaseToolService.Request request = new DatabaseToolService.Request(query);
+    DatabaseQueryToolService.Request request = new DatabaseQueryToolService.Request("library", query);
 
     // Act
-    DatabaseToolService.Response response = databaseToolService.apply(request);
+    DatabaseQueryToolService.Response response = databaseToolService.apply(request);
 
     // Assert
     assertNotNull(response);
-    DatabaseToolService.ResultSetWrapper result = response.result();
+    DatabaseQueryToolService.ResultSetWrapper result = response.result();
     assertNotNull(result);
     List<Map<String, Object>> rows = result.rows();
     assertNotNull(rows);

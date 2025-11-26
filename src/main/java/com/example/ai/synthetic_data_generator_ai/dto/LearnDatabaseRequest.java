@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record LearnDatabaseRequest(
-    String prompt,
-    @Range(min = 0, max = 1) Double temperature,
-    @Range(min = 1, max = 100) Integer maxRows) {
+        String prompt,
+        @Range(min = 0, max = 1) Double temperature,
+        @Range(min = 1, max = 100) Integer maxRows) {
 }

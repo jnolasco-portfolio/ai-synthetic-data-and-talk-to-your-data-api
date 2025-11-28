@@ -47,7 +47,7 @@ public class TalkToYourDataControllerTest {
 
                 String expectedSqlQuery = "SELECT * FROM Authors ORDER BY birth_date ASC LIMIT 1";
 
-                mockMvc.perform(post("/api/v1/query")
+                mockMvc.perform(post("/api/v1/schema-assistant/questions")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                                 .andDo(print())

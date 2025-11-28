@@ -29,29 +29,33 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/schema-assistant")
 public class TalkToYourDataController {
 
-    private static final String I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA = "I cannot answer this question with the available data.";
-    private final DynamicDataService dynamicDataService;
-    private final LLMSchemaAssistantClient llmClient;
+        private static final String I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA = "I cannot answer this question with the available data.";
+        private final DynamicDataService dynamicDataService;
+        private final LLMSchemaAssistantClient llmClient;
 
-    @PostMapping("questions")
-    public ResponseEntity<QueryResponse> query(@RequestBody QueryRequest request) {
+        @PostMapping("questions")
+        public ResponseEntity<QueryResponse> query(@RequestBody QueryRequest request) {
 
-        LearnDatabaseResponse databaseSchema = dynamicDataService
-                .getDatabaseSchema(request.schemaName());
+                LearnDatabaseResponse databaseSchema = dynamicDataService
+                                .getDatabaseSchema(request.schemaName());
 
-        String sql = llmClient.generateSqlQuery(request.conversationId(), databaseSchema, request.question());
-        log.info("Talking to your data. conversationId: {}, question: {}, SQLQuery: {}", request.conversationId(),
-                request.question());
+                String sql = llmClient.generateSqlQuery(request.conversationId(), databaseSchema, request.question());
+                log.info("Talking to your data. conversationId: {}, question: {}, SQLQuery: {}",
+                                request.conversationId(),
+                                request.question());
 
-        if (sql.equalsIgnoreCase(I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA)) {
-            return ResponseEntity
-                    .ok(new QueryResponse(UUID.randomUUID(), request.conversationId(), request.question(), "N/A",
-                            List.of(Map.of("Error", I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA))));
+                if (sql.equalsIgnoreCase(I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA)) {
+                        return ResponseEntity
+                                        .ok(new QueryResponse(UUID.randomUUID(), request.conversationId(),
+                                                        request.question(), "N/A",
+                                                        List.of(Map.of("Error",
+                                                                        I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA))));
+                }
+
+                List<Map<String, Object>> result = dynamicDataService.executeQuery(request.schemaName(), sql);
+
+                return ResponseEntity
+                                .ok(new QueryResponse(UUID.randomUUID(), request.conversationId(), request.question(),
+                                                sql, result));
         }
-
-        List<Map<String, Object>> result = dynamicDataService.executeQuery(request.schemaName(), sql);
-
-        return ResponseEntity
-                .ok(new QueryResponse(UUID.randomUUID(), request.conversationId(), request.question(), sql, result));
-    }
 }

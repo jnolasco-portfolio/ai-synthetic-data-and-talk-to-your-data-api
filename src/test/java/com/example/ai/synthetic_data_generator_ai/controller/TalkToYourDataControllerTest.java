@@ -45,13 +45,14 @@ public class TalkToYourDataControllerTest {
                                 "123",
                                 "library");
 
-                String expectedSqlQuery = "SELECT * FROM Authors ORDER BY birth_date ASC LIMIT 1";
+                String expectedSqlQuery = "SELECT first_name, last_name, birth_date FROM Authors ORDER BY birth_date ASC LIMIT 1";
 
                 mockMvc.perform(post("/api/v1/schema-assistant/questions")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                                 .andDo(print())
                                 .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.metadata.content_type").value("table"))
                                 .andExpect(jsonPath("$.sqlQuery").value(expectedSqlQuery))
                                 .andExpect(jsonPath("$.result[0].first_name").value("Homer"));
         }

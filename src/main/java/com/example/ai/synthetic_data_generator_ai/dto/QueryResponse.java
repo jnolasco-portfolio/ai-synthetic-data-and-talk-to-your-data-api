@@ -12,5 +12,6 @@ public record QueryResponse(
         String conversationId,
         String question,
         String sqlQuery,
+        QueryResponseMetadata metadata,
         List<Map<String, Object>> result) {
 }

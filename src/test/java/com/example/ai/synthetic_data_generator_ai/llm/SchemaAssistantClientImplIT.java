@@ -77,9 +77,9 @@ public class SchemaAssistantClientImplIT {
         LearnDatabaseResponse.class);
 
     String question = "Show me authors";
-    String sqlQuery = underTest.generateSqlQuery("123", schema, question);
-    log.info("SQL Query: {}", sqlQuery);
-    assertThat(sqlQuery).isEqualTo("SELECT * FROM Authors");
+    LLMQueryResponse llmResponse = underTest.generateSqlQuery("123", schema, question);
+    log.info("LLM Response: {}", llmResponse);
+    assertThat(llmResponse).isEqualTo("SELECT * FROM Authors");
 
   }
 
@@ -90,9 +90,9 @@ public class SchemaAssistantClientImplIT {
         LearnDatabaseResponse.class);
 
     String question = "How many books?";
-    String sqlQuery = underTest.generateSqlQuery("123", schema, question);
-    log.info("SQL Query: {}", sqlQuery);
-    assertThat(sqlQuery).isEqualToIgnoringCase("SELECT count(*) FROM Books");
+    LLMQueryResponse llmResponse = underTest.generateSqlQuery("123", schema, question);
+    log.info("LLM Response: {}", llmResponse);
+    assertThat(llmResponse.sqlQuery()).isEqualToIgnoringCase("SELECT count(*) FROM Books");
   }
 
   @Test
@@ -102,10 +102,10 @@ public class SchemaAssistantClientImplIT {
         LearnDatabaseResponse.class);
 
     String question = "How many books by author?";
-    String sqlQuery = underTest.generateSqlQuery("123", schema, question);
-    log.info("SQL Query: {}", sqlQuery);
+    LLMQueryResponse llmResponse = underTest.generateSqlQuery("123", schema, question);
+    log.info("LLM Response: {}", llmResponse);
 
-    assertThat(sqlQuery.trim()).isNotEmpty();
+    assertThat(llmResponse.sqlQuery().trim()).isNotEmpty();
   }
 
   @Test
@@ -115,10 +115,10 @@ public class SchemaAssistantClientImplIT {
         LearnDatabaseResponse.class);
 
     String question = "How many books by author?";
-    String sqlQuery = underTest.generateSqlQuery("123", schema, question);
-    log.info("SQL Query: {}", sqlQuery);
+    LLMQueryResponse llmResponse = underTest.generateSqlQuery("123", schema, question);
+    log.info("LLM Response: {}", llmResponse);
 
-    assertThat(sqlQuery.trim()).isNotEmpty();
+    assertThat(llmResponse.sqlQuery().trim()).isNotEmpty();
   }
 
 }

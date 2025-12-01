@@ -105,21 +105,22 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
 
   @Override
   @Cacheable(cacheNames = "queryStrings", key = "{#conversationId, #schema, #question}")
-  public String generateSqlQuery(String conversationId, LearnDatabaseResponse schema, String question) {
+  public LLMQueryResponse generateSqlQuery(String conversationId, LearnDatabaseResponse schema, String question) {
     log.info("Generating SQL query for conversationId: {}, question: {}", conversationId, question);
 
-    String sqlQuery = schemaAssistantChatClient.prompt()
+    LLMQueryResponse response = schemaAssistantChatClient.prompt()
         .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
         .user(u -> u.text(nlToSqlPrompt)
             .params(Map.of(
                 "schema", schema,
                 "question", question)))
         .call()
-        .content();
+        .entity(new ParameterizedTypeReference<LLMQueryResponse>() {
+        });
 
     log.info("Successfully generated SQL query for conversationId: {}", conversationId);
-    log.debug("Generated SQL: {}", sqlQuery);
-    return sqlQuery;
+    log.debug("Generated SQL: {}", response.sqlQuery());
+    return response;
   }
 
 }

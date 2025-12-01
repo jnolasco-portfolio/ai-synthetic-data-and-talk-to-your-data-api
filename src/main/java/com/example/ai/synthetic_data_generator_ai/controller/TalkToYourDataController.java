@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
 import com.example.ai.synthetic_data_generator_ai.dto.QueryRequest;
 import com.example.ai.synthetic_data_generator_ai.dto.QueryResponse;
+import com.example.ai.synthetic_data_generator_ai.llm.LLMQueryResponse;
 import com.example.ai.synthetic_data_generator_ai.llm.LLMSchemaAssistantClient;
 import com.example.ai.synthetic_data_generator_ai.service.DynamicDataService;
 
@@ -39,23 +40,25 @@ public class TalkToYourDataController {
                 LearnDatabaseResponse databaseSchema = dynamicDataService
                                 .getDatabaseSchema(request.schemaName());
 
-                String sql = llmClient.generateSqlQuery(request.conversationId(), databaseSchema, request.question());
+                LLMQueryResponse llmResponse = llmClient.generateSqlQuery(request.conversationId(), databaseSchema,
+                                request.question());
                 log.info("Talking to your data. conversationId: {}, question: {}, SQLQuery: {}",
                                 request.conversationId(),
-                                request.question());
+                                request.question(), llmResponse.sqlQuery());
 
-                if (sql.equalsIgnoreCase(I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA)) {
+                if (llmResponse.sqlQuery().equalsIgnoreCase(I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA)) {
                         return ResponseEntity
                                         .ok(new QueryResponse(UUID.randomUUID(), request.conversationId(),
-                                                        request.question(), "N/A",
+                                                        request.question(), "N/A", llmResponse.metadata(),
                                                         List.of(Map.of("Error",
                                                                         I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA))));
                 }
 
-                List<Map<String, Object>> result = dynamicDataService.executeQuery(request.schemaName(), sql);
+                List<Map<String, Object>> result = dynamicDataService.executeQuery(request.schemaName(),
+                                llmResponse.sqlQuery());
 
                 return ResponseEntity
                                 .ok(new QueryResponse(UUID.randomUUID(), request.conversationId(), request.question(),
-                                                sql, result));
+                                                llmResponse.sqlQuery(), llmResponse.metadata(), result));
         }
 }

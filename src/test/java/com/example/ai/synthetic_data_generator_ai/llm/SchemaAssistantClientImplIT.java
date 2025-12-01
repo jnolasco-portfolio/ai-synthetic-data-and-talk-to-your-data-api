@@ -79,7 +79,11 @@ public class SchemaAssistantClientImplIT {
     String question = "Show me authors";
     LLMQueryResponse llmResponse = underTest.generateSqlQuery("123", schema, question);
     log.info("LLM Response: {}", llmResponse);
-    assertThat(llmResponse).isEqualTo("SELECT * FROM Authors");
+    assertThat(llmResponse.sqlQuery()).isEqualToIgnoringCase(
+        "SELECT author_id, first_name, last_name, birth_date, death_date, nationality, biography FROM Authors;");
+    assertThat(llmResponse.metadata().categoryKey()).isNull();
+    assertThat(llmResponse.metadata().valueKey()).isNull();
+    assertThat(llmResponse.metadata().contentType()).isEqualToIgnoringCase("table");
 
   }
 
@@ -92,7 +96,7 @@ public class SchemaAssistantClientImplIT {
     String question = "How many books?";
     LLMQueryResponse llmResponse = underTest.generateSqlQuery("123", schema, question);
     log.info("LLM Response: {}", llmResponse);
-    assertThat(llmResponse.sqlQuery()).isEqualToIgnoringCase("SELECT count(*) FROM Books");
+    assertThat(llmResponse.sqlQuery()).isEqualToIgnoringCase("SELECT COUNT(*) AS total_books FROM Books;");
   }
 
   @Test

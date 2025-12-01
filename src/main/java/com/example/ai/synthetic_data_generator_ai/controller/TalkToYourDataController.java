@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Valid
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/schema-assistant")
+@RequestMapping("/api/v1/data-conversations")
 public class TalkToYourDataController {
 
         private static final String I_CANNOT_ANSWER_THIS_QUESTION_WITH_THE_AVAILABLE_DATA = "I cannot answer this question with the available data.";

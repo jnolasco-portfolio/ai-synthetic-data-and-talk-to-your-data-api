@@ -38,4 +38,4 @@ otel:
         endpoint: http://localhost:3001/api/public/otel/v1/traces
         headers:
           # Replace the Base64 value with YOUR encoded Langfuse keys
-          Authorization: Basic cGstbGYtYmMzOGJkMzYtYmU1Ny00YWIyLTg4MjUtNzUxNWQ0NzAxZmI1OnNrLWxmLWQ4MDhjMDVkLWNkYzMtNDI0ZC05NWViLWIyMjE1MWNlNjI2YQ==
+          Authorization: Basic ${LANGFUSE_OTEL_AUTH}

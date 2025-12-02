@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example.ai</groupId>
-	<artifactId>ai-synthetic-data-generator-api</artifactId>
+	<artifactId>ai-synthetic-data-and-talk-to-your-data-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>synthetic-data-generator-ai</name>
-	<description>This project levarage AI in order to generate synthetic data from SQL DDL statements.</description>
+	<description>This project levarage AI in order to generate synthetic data and use natural lenguage to talk to your data and get answers in multi modal way tables, pies, bar, lines charts.</description>
 	<url />
 	<licenses>
 		<license />

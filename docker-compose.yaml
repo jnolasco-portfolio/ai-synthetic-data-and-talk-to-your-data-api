@@ -22,6 +22,7 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
+      APACHE_SERVERNAME: pma
     ports:
       - "8090:80"
     networks:

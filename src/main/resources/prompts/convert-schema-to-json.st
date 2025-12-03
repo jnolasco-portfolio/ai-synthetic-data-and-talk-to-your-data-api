@@ -49,4 +49,4 @@ SQL Schema for database '{schemaName}':
 
 {schema}
 
-Generate the JSON document now. Do not add any extra explanations or text outside of the JSON document.
+Generate the JSON document now. Your response MUST contain ONLY the JSON document, enclosed within ```json and ``` delimiters. Do NOT add any other text, explanations, or formatting outside of these delimiters.

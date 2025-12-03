@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
@@ -42,7 +43,8 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       String conversationId,
       String schemaName,
       InputStream schemaStream,
-      String userPrompt) {
+      String userPrompt,
+      Double temperature) {
 
     log.info("Normalizing schema for conversationId: {}, schemaName: {}", conversationId, schemaName);
 
@@ -54,9 +56,9 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       String ddl = new String(schemaStream.readAllBytes(), StandardCharsets.UTF_8);
       log.debug("Schema DDL: {}", ddl);
 
-      // TODO: Temperature
       LearnDatabaseResponse schema = schemaAssistantChatClient
           .prompt()
+          .options(VertexAiGeminiChatOptions.builder().temperature(temperature != null ? temperature : 0.2d).build())
           .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
           .user(u -> u.text(normalizeSchemaPrompt)
               .params(Map.of(
@@ -82,12 +84,14 @@ public class LLMSchemaAssistantClientImpl implements LLMSchemaAssistantClient {
       @NonNull LearnDatabaseResponse schema,
       @NonNull String tableName,
       int rowCount,
-      @NonNull String userInstructions) {
+      @NonNull String userInstructions,
+      Double temperature) {
     log.info("Generating synthetic data for conversationId: {}, tableName: {}, maxRows: {}", conversationId, tableName,
         rowCount); // rowCount is maxRows
 
-    // TODO: Add temperature from user
     List<String> csvRows = schemaAssistantChatClient.prompt()
+        .options(VertexAiGeminiChatOptions.builder()
+            .temperature(temperature != null ? temperature : 0.2d).build())
         .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
         .user(u -> u.text(generateSyntheticDataPrompt)
             .params(Map.of(

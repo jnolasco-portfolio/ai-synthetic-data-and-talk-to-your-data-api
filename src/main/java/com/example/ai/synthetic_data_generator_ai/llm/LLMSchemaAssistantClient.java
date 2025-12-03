@@ -8,14 +8,14 @@ import com.example.ai.synthetic_data_generator_ai.dto.LearnDatabaseResponse;
 public interface LLMSchemaAssistantClient {
 
         LearnDatabaseResponse learnSchema(String conversationId, String schemaName, InputStream schemaStream,
-                        String userPrompt);
+                        String userPrompt, Double temperature);
 
         List<String> getSyntheticDataAsCsv(
                         String conversationId,
                         LearnDatabaseResponse schema,
                         String tableName,
                         int rowCount,
-                        String userInstructions);
+                        String userInstructions, Double temperature);
 
         LLMQueryResponse generateSqlQuery(
                         String conversationId,

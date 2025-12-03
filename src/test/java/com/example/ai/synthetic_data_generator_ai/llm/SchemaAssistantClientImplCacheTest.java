@@ -48,11 +48,12 @@ public class SchemaAssistantClientImplCacheTest {
     String conversationId = "987";
     String schemaName = "library";
     String userPrompt = "mysql";
+    Double temperature = 0.2;
 
     underTest.learnSchema(conversationId, schemaName,
-        exampleSchema.getInputStream(), userPrompt);
+        exampleSchema.getInputStream(), userPrompt, temperature); // First call to populate the cache
     LearnDatabaseResponse normalizeSchema = underTest.learnSchema(conversationId, schemaName,
-        exampleSchema.getInputStream(), userPrompt);
+        exampleSchema.getInputStream(), userPrompt, temperature);
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);
     JsonNode actualJson = objectMapper.readTree(json);
@@ -80,9 +81,11 @@ public class SchemaAssistantClientImplCacheTest {
         .orElseThrow();
 
     String userInstructions = "Data in spanish language";
+    Double temperature = 0.2;
 
-    underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions);
-    List<String> rows = underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions);
+    underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions, temperature);
+    List<String> rows = underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions,
+        temperature);
 
     System.out.println(rows);
     assertThat(rows).hasSize(10);

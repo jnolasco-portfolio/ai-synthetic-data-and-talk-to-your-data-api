@@ -36,10 +36,12 @@ public class SchemaAssistantClientImplIT {
   @Autowired
   ObjectMapper objectMapper;
 
+  private Double temperature = 0.2;
+
   @Test
   void testNormalizeSchema() throws IOException {
     LearnDatabaseResponse normalizeSchema = underTest.learnSchema("123", "library", exampleSchema.getInputStream(),
-        "mysql");
+        "mysql", temperature);
 
     String json = JsonTestUtils.getObjectAsPrettyJson(normalizeSchema, objectMapper);
     JsonNode actualJson = objectMapper.readTree(json);
@@ -65,7 +67,8 @@ public class SchemaAssistantClientImplIT {
 
     String userInstructions = "Data in spanish language";
 
-    List<String> rows = underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions);
+    List<String> rows = underTest.getSyntheticDataAsCsv("123", schema, table.getName(), 10, userInstructions,
+        temperature);
     System.out.println(rows);
     assertThat(rows).hasSize(10);
   }

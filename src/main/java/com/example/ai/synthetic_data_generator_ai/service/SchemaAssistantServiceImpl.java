@@ -30,7 +30,8 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
                 LearnDatabaseResponse normalizeSchema = llmSchemaAssistantClient.learnSchema(conversationId,
                                 schemaName,
                                 schemaStream,
-                                request.prompt());
+                                request.prompt(),
+                                request.temperature());
 
                 return normalizeSchema;
         }
@@ -42,7 +43,8 @@ public class SchemaAssistantServiceImpl implements SchemaAssistantService {
                                 request.schema(),
                                 request.tableName(),
                                 request.maxRows(),
-                                request.instructions());
+                                request.instructions(),
+                                request.temperature());
                 return DataGenerationResponse.builder()
                                 .tableName(request.tableName())
                                 .data(syntheticData)

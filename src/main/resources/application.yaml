@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: synthetic-data-generator-ai
+    name: ai-synthetic-data-generator
   profiles:
     active: local
   liquibase:
@@ -18,7 +18,7 @@ spring:
           chat:
             options:
               model: gemini-2.5-flash
-              temperature: 0.4
+              temperature: 0.2
     chat:
       client:
         observations:
@@ -26,16 +26,21 @@ spring:
           log-completion: true # Include the model's response
 
 # 1. OpenTelemetry Configuration for Traces (Sent to Langfuse)
-otel:
-  logs:
-    exporter: none
-  service:
-    name: ai-synthetic-data-generator # Required: Service name in Langfuse
-  exporter:
-    otlp:
-      traces:
-        # Langfuse OTLP endpoint (use your local IP if localhost doesn't resolve in Docker)
-        endpoint: http://localhost:3001/api/public/otel/v1/traces
-        headers:
-          # Replace the Base64 value with YOUR encoded Langfuse keys
-          Authorization: Basic ${LANGFUSE_OTEL_AUTH}
+logging:
+  level:
+    org:
+      springframework:
+        ai: DEBUG
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # Sample 100% of requests for full tracing (adjust in production as needed)
+  observations:
+    annotations:
+      enabled: true # Enable @Observed (if you use observation annotations in code)
+  exporters:
+  otlphttp/langfuse:
+    endpoint: "https://localhost:3001/api/public/otel" # Adjust based on your region
+    headers:
+      Authorization: "Basic ${LANGFUSE_OTEL_AUTH}" # Base64 encoded API keys
+
